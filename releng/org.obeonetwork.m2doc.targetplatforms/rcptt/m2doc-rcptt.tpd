@@ -81,6 +81,7 @@ location "https://download.eclipse.org/acceleo/updates/nightly/latest/" {
 	org.eclipse.acceleo.query.cdo.feature.group lazy
 	org.eclipse.acceleo.query.sirius.feature.group lazy
 	org.eclipse.acceleo.query.jdt.feature.group lazy
+	org.antlr.antlr4-runtime lazy
 }
 
 
@@ -95,9 +96,6 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R201809052019
 
 location ObeoNetworkBits "https://obeo-networkaggregation-releases.s3.eu-west-1.amazonaws.com/bits/master/thirdparties" {
 	org.apache.poi.feature.feature.group lazy
-
-	// AQL
-	org.antlr.runtime [4.7.2,4.7.3)
 }
 
 location CDO "https://download.eclipse.org/modeling/emf/cdo/drops/R20230307-0126/" {

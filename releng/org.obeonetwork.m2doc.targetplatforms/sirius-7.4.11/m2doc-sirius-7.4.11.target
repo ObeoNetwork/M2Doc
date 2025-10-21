@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="M2Doc Sirius 7.4.11 Target Platform" sequenceNumber="1758554321">
+<target name="M2Doc Sirius 7.4.11 Target Platform" sequenceNumber="1761057165">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -85,6 +85,7 @@
       <unit id="org.eclipse.acceleo.query.sirius.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.acceleo.query.jdt.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.acceleo.query.ui.feature.group" version="0.0.0"/>
+      <unit id="org.antlr.antlr4-runtime" version="0.0.0"/>
       <repository location="https://download.eclipse.org/acceleo/updates/nightly/latest/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
@@ -98,7 +99,6 @@
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.apache.poi.feature.feature.group" version="0.0.0"/>
-      <unit id="org.antlr.runtime" version="4.7.2.v20221112-9999"/>
       <repository id="ObeoNetworkBits" location="https://obeo-networkaggregation-releases.s3.eu-west-1.amazonaws.com/bits/master/thirdparties"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">

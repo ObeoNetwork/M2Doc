@@ -10,7 +10,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.acceleo.query;bundle-version="[8.1.0,9.0.0)",
- org.antlr.runtime;bundle-version="[4.10.1,4.10.2)",
+ org.antlr.antlr4-runtime;bundle-version="[4.13.2,4.13.3)",
  org.apache.poi;bundle-version="[5.2.3,5.2.4)",
  org.eclipse.acceleo.annotations;bundle-version="[8.1.0,9.0.0)",
  org.apache.batik.transcoder;bundle-version="[1.17.0,2.0.0)",
