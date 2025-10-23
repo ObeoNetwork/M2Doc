@@ -189,8 +189,14 @@ public class M2DocUtilsTests {
     public void versionTest() throws IOException {
         final String manifest = new String(Files.readAllBytes(Paths.get("META-INF/MANIFEST.MF")));
 
-        final String version = manifest.substring(manifest.indexOf("Bundle-Version: ") + 16,
-                manifest.indexOf(".qualifier"));
+        final String version;
+        final int qualifierIndex = manifest.indexOf(".qualifier");
+        final int startIndex = manifest.indexOf("Bundle-Version: ") + 16;
+        if (qualifierIndex != -1) {
+            version = manifest.substring(startIndex, qualifierIndex);
+        } else {
+            version = manifest.substring(startIndex, manifest.indexOf("\n", startIndex));
+        }
 
         assertEquals(version, M2DocUtils.VERSION);
     }
