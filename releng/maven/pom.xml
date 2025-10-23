@@ -36,7 +36,7 @@
     </repository>
     <repository>
       <id>Acceleo Repository</id>
-      <url>https://download.eclipse.org/acceleo/updates/nightly/latest/</url>
+      <url>https://download.eclipse.org/acceleo/updates/releases/4.2/R202510230846/</url>
     </repository>
   </repositories>
 

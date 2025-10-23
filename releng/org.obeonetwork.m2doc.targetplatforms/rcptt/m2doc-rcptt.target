@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="M2Doc RCPTT Target Platform" sequenceNumber="1761057345">
+<target name="M2Doc RCPTT Target Platform" sequenceNumber="1761226154">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -73,7 +73,7 @@
       <unit id="org.eclipse.acceleo.query.sirius.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.acceleo.query.jdt.feature.group" version="0.0.0"/>
       <unit id="org.antlr.antlr4-runtime" version="0.0.0"/>
-      <repository location="https://download.eclipse.org/acceleo/updates/nightly/latest/"/>
+      <repository location="https://download.eclipse.org/acceleo/updates/releases/4.2/R202510230846/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
