@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.xtext.example.mydsl.ui
 Bundle-Vendor: My Company
-Bundle-Version: 5.0.0.qualifier
+Bundle-Version: 5.0.0
 Bundle-SymbolicName: org.xtext.example.mydsl.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext.ui,

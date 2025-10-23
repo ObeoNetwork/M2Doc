@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Localization: plugin
 Bundle-SymbolicName: org.obeonetwork.m2doc.tests
-Bundle-Version: 5.0.0.qualifier
+Bundle-Version: 5.0.0
 Require-Bundle: org.eclipse.core.runtime,
  org.obeonetwork.m2doc;bundle-version="[5.0.0,6.0.0)",
  org.junit;bundle-version="4.11.0",

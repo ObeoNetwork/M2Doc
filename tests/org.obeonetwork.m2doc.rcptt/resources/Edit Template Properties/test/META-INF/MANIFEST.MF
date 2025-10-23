@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Automatic-Module-Name: test
 Bundle-Name: test
 Bundle-SymbolicName: test
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Export-Package: test
 Require-Bundle: org.obeonetwork.m2doc.rcptt.a,
  org.obeonetwork.m2doc.ide.tests
