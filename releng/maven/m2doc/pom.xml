@@ -86,6 +86,19 @@
             </configuration>
           </execution>
           <execution>
+            <id>copy-sources-dependencies</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <classifier>sources</classifier>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <overWriteIfNewer>true</overWriteIfNewer>
+              <copyPom>true</copyPom>
+            </configuration>
+          </execution>
+          <execution>
             <phase>generate-sources</phase>
             <goals>
               <goal>sources</goal>
@@ -110,24 +123,12 @@
             </goals>
             <configuration>
               <file>target/lib/org.obeonetwork.m2doc-${project.version}.jar</file>
+              <sources>target/lib/org.obeonetwork.m2doc-${project.version}-sources.jar</sources>
               <groupId>org.obeonetwork.m2doc</groupId>
               <artifactId>org.obeonetwork.m2doc</artifactId>
               <version>${project.version}</version>
               <packaging>jar</packaging>
               <generatePom>true</generatePom>
-              <url>${deployURL}</url>
-            </configuration>
-          </execution>
-          <execution>
-            <id>deploy-file-org.eclipse.emf.ecore.xmi</id>
-            <phase>deploy</phase>
-            <goals>
-              <goal>deploy-file</goal>
-            </goals>
-            <configuration>
-              <file>target/lib/org.eclipse.emf.ecore.xmi-2.39.0.jar</file>
-              <pomFile>target/lib/org.eclipse.emf.ecore.xmi-2.39.0.pom</pomFile>
-              <generatePom>false</generatePom>
               <url>${deployURL}</url>
             </configuration>
           </execution>
