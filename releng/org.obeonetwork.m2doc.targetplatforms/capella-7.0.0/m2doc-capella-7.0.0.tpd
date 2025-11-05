@@ -8,7 +8,7 @@ location GMF-Notation-1.13.1 "https://download.eclipse.org/modeling/gmp/gmf-nota
 	org.eclipse.gmf.runtime.notation.sdk.feature.group lazy
 }
 
-location GMF-Runtime-1.16 "https://download.eclipse.org/modeling/gmp/gmf-runtime/updates/milestones/S202401081627/" {
+location GMF-Runtime-1.16 "https://download.eclipse.org/modeling/gmp/gmf-runtime/updates/releases/R202403010913/" {
 	org.eclipse.gmf.runtime.sdk.feature.group lazy
 	org.eclipse.gmf.runtime.thirdparty.feature.group lazy
 
