@@ -21,6 +21,8 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -97,6 +99,15 @@ public class SelectTemplateFromLibraryDialog extends MessageDialog {
             public void selectionChanged(SelectionChangedEvent event) {
                 final String selected = (String) ((IStructuredSelection) event.getSelection()).getFirstElement();
                 templateURI = URI.createFileURI(selected);
+            }
+        });
+        templatesTreeViewer.addDoubleClickListener(new IDoubleClickListener() {
+
+            @Override
+            public void doubleClick(DoubleClickEvent event) {
+                if (getButton(OK).isEnabled()) {
+                    buttonPressed(IDialogConstants.OK_ID);
+                }
             }
         });
         templatesTreeViewer.setInput(templatesFromLibraries);

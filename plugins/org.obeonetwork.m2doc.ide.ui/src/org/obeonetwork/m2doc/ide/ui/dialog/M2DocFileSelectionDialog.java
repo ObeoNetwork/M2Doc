@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018 Obeo. 
+ *  Copyright (c) 2018, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -20,6 +20,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -171,6 +173,15 @@ public class M2DocFileSelectionDialog extends MessageDialog {
         });
         containerTreeViewer.setLabelProvider(new WorkbenchLabelProvider());
         containerTreeViewer.addSelectionChangedListener(new ContainerSelectionChangedListener());
+        containerTreeViewer.addDoubleClickListener(new IDoubleClickListener() {
+
+            @Override
+            public void doubleClick(DoubleClickEvent event) {
+                if (getButton(OK).isEnabled()) {
+                    buttonPressed(IDialogConstants.OK_ID);
+                }
+            }
+        });
         containerTreeViewer.setInput(ResourcesPlugin.getWorkspace().getRoot());
         if (defaultFileName != null && !defaultFileName.isEmpty()) {
             final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(defaultFileName));
