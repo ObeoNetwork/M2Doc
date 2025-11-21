@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019, 2024 Obeo. 
+ *  Copyright (c) 2019, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -47,6 +47,7 @@ import org.obeonetwork.m2doc.element.MParagraph;
 import org.obeonetwork.m2doc.element.MStyle;
 import org.obeonetwork.m2doc.element.MTable;
 import org.obeonetwork.m2doc.element.MTable.MCell;
+import org.obeonetwork.m2doc.element.MTable.MCell.Merge;
 import org.obeonetwork.m2doc.element.MTable.MRow;
 import org.obeonetwork.m2doc.element.MTable.MTableAlign;
 import org.obeonetwork.m2doc.element.MText;
@@ -1185,6 +1186,9 @@ public class M2DocHTMLParser extends Parser {
             childNodes = new ArrayList<>(body.childNodes());
         }
 
+        boolean lastRowHasPendingVMerge = false;
+        int lastNbCells = -1;
+        MRow lastRow = null;
         for (Node child : childNodes) {
             if ("tr".equals(child.nodeName())) {
                 final MRow row = new MRowImpl();
@@ -1216,6 +1220,22 @@ public class M2DocHTMLParser extends Parser {
                     }
                 }
                 insertRowspans(row, rowSpans, vMergeCopies);
+                // some vertical merge cells can be missing when the cell is declared on the next row. see bug #549
+                if (lastRowHasPendingVMerge) {
+                    while (lastNbCells < row.getCells().size()) {
+                        MCell currentCellToMoveUp = row.getCells().remove(lastNbCells);
+                        lastRow.getCells().add(currentCellToMoveUp);
+                        currentCellToMoveUp.setVMerge(Merge.RESTART);
+                        final MList vMergedContents = new MListImpl();
+                        final MCell vMergedCell = new MCellImpl(vMergedContents, null);
+                        vMergedCell.setVMerge(MCell.Merge.CONTINUE);
+                        row.getCells().add(lastNbCells, vMergedCell);
+                        lastNbCells = lastRow.getCells().size();
+                    }
+                }
+                lastRowHasPendingVMerge = lastNbCells > row.getCells().size() && !rowSpans.isEmpty();
+                lastNbCells = row.getCells().size();
+                lastRow = row;
             }
         }
     }
