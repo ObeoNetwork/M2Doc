@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2024 Obeo. 
+ *  Copyright (c) 2016, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -968,7 +968,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             final CTSectPr section = paragraph.getCTP().getPPr().getSectPr();
             res = getAbsoluteWidthFromSection(image, section);
         } else {
-            // no section attached to the paragraph try the containing boby
+            // no section attached to the paragraph try the containing body
             final IBody body = paragraph.getBody();
             if (body instanceof XWPFDocument) {
                 final CTSectPr section = ((XWPFDocument) body).getDocument().getBody().getSectPr();
@@ -978,8 +978,20 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                         .getSectPr();
                 res = getAbsoluteWidthFromSection(image, section);
             } else if (body instanceof XWPFTableCell) {
-                final int cellWidth = ((XWPFTableCell) body).getWidth();
-                res = (int) (cellWidth * image.getRelativeWidth() / 100.0d / UNIT_CONVERSION);
+                final XWPFTableCell cell = (XWPFTableCell) body;
+                final int cellWidth;
+                // avoid an NPE from POI
+                if (cell.getCTTc() != null && cell.getCTTc().getTcPr() != null
+                    && cell.getCTTc().getTcPr().getTcW() != null && cell.getCTTc().getTcPr().getTcW().getW() != null) {
+                    cellWidth = cell.getWidth();
+                } else {
+                    cellWidth = 0;
+                }
+                if (cellWidth > 0) {
+                    res = (int) (cellWidth * image.getRelativeWidth() / 100.0d / UNIT_CONVERSION);
+                } else {
+                    res = image.getWidth();
+                }
             } else {
                 throw new UnsupportedOperationException("unknown type of IBody : " + body.getClass());
             }
@@ -1033,7 +1045,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             final CTSectPr section = paragraph.getCTP().getPPr().getSectPr();
             res = getAbsoluteHeightFromSection(image, section);
         } else {
-            // no section attached to the paragraph try the containing boby
+            // no section attached to the paragraph try the containing body
             final IBody body = paragraph.getBody();
             if (body instanceof XWPFDocument) {
                 final CTSectPr section = ((XWPFDocument) body).getDocument().getBody().getSectPr();
@@ -1043,8 +1055,12 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                         .getSectPr();
                 res = getAbsoluteHeightFromSection(image, section);
             } else if (body instanceof XWPFTableCell) {
-                // TODO technically the cell height depend on its content
-                res = image.getHeight();
+                final int rowHeight = ((XWPFTableCell) body).getTableRow().getHeight();
+                if (rowHeight > 0) {
+                    res = (int) (rowHeight * image.getRelativeHeight() / 100.0d / UNIT_CONVERSION);
+                } else {
+                    res = image.getHeight();
+                }
             } else {
                 throw new UnsupportedOperationException("unknown type of IBody : " + body.getClass());
             }

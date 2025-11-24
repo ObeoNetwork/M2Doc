@@ -1,0 +1,36 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a query :
+  table
+    row
+      
+        
+      
+        
+      
+        
+      
+    row
+      
+        
+      
+        [query: .fromHTMLURI('doc.html')]
+      
+        
+      
+    row
+      
+        
+      
+        
+      
+        
+      
+    
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
