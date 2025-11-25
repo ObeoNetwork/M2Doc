@@ -185,7 +185,7 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R201908271527
 	javax.servlet [3.1.0,3.2.0)
 }
 
-location ObeoNetworkBits "https://obeo-networkaggregation-releases.s3.eu-west-1.amazonaws.com/bits/master/thirdparties" {
+location ObeoNetworkBits "https://obeo-networkaggregation-releases.s3.eu-west-1.amazonaws.com/bits/0.14.0/thirdparties" {
 	org.apache.poi.feature.feature.group lazy
 }
 
