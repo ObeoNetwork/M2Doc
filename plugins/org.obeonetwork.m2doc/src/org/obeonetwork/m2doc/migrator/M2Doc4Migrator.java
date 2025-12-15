@@ -96,7 +96,7 @@ public class M2Doc4Migrator implements IM2DocMigrator {
             }
         }
 
-        if (inField) {
+        if (inField && isM2DocInstruction) {
             final XWPFRun lastParagraphRun = paragraph.getRuns().get(paragraph.getRuns().size() - 1);
             result.add(new TemplateValidationMessage(ValidationMessageLevel.ERROR, "Multi paragraph field detected.",
                     lastParagraphRun));
