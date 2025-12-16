@@ -1912,9 +1912,7 @@ public class M2DocHTMLParser extends Parser {
                     type = STNumberFormat.NONE;
                 }
 
-        if (context.numbering == null) {
-            createNumbering(context);
-        }
+        createNumbering(context);
         incrementNumberingLevel(context, type, 1, symbol, false);
     }
 
@@ -1966,10 +1964,9 @@ public class M2DocHTMLParser extends Parser {
         } else {
             start = 1;
         }
+
+        createNumbering(context);
         final boolean reversed = element.hasAttr("reversed");
-        if (context.numbering == null) {
-            createNumbering(context);
-        }
         incrementNumberingLevel(context, type, start, "", reversed);
     }
 
