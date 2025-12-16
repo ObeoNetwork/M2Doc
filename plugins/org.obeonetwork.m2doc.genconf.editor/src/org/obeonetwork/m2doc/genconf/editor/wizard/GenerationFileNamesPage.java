@@ -596,6 +596,7 @@ public class GenerationFileNamesPage extends WizardPage implements ITemplateCust
             final Map<String, String> options = GenconfUtils.getOptions(generation);
             final boolean ignoreVersionCheck = Boolean.valueOf(options.get(M2DocUtils.IGNORE_VERSION_CHECK_OPTION));
             if (!ignoreVersionCheck && !M2DocUtils.VERSION.equals(res.getM2DocVersion())) {
+                setErrorMessage(null);
                 setMessage("M2Doc version mismatch: template version is " + res.getM2DocVersion()
                     + " and current M2Doc version is " + M2DocUtils.VERSION, IMessageProvider.WARNING);
             } else {

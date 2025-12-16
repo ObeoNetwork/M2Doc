@@ -28,6 +28,7 @@ import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
@@ -192,8 +193,9 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
 
         if (selected != null && !selected.isEmpty()) {
             final ResourceSet rs = new ResourceSetImpl();
-            final URI genconfURI = URI.createPlatformResourceURI(
-                    ((IResource) selection.getFirstElement()).getFullPath().toString(), true);
+            final IResource container = Platform.getAdapterManager().getAdapter(selection.getFirstElement(),
+                    IResource.class);
+            final URI genconfURI = URI.createPlatformResourceURI(container.getFullPath().toString(), true);
             if (GenconfUtils.GENCONF_EXTENSION_FILE.equals(genconfURI.fileExtension())) {
                 final Resource resource = rs.getResource(genconfURI, true);
                 if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Generation) {
@@ -307,8 +309,10 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
         final URI res;
 
         if (selected != null && !selected.isEmpty()) {
-            if (selected.getFirstElement() instanceof IFile) {
-                final IFile file = (IFile) selected.getFirstElement();
+            final IResource resource = Platform.getAdapterManager().getAdapter(selection.getFirstElement(),
+                    IResource.class);
+            if (resource instanceof IFile) {
+                final IFile file = (IFile) resource;
                 if (M2DocUtils.DOCX_EXTENSION_FILE.equals(file.getFileExtension())) {
                     final String fullPathString = file.getFullPath().toString();
                     String genconfFileString = fullPathString.substring(0,
@@ -319,8 +323,8 @@ public class NewGenerationWizard extends Wizard implements INewWizard {
                     final String fullPathString = file.getParent().getFullPath().toString();
                     res = URI.createPlatformResourceURI(fullPathString + "/" + DEFAULT_GENCONF_FILE_NAME, true);
                 }
-            } else if (selected.getFirstElement() instanceof IContainer) {
-                final IContainer container = (IContainer) selected.getFirstElement();
+            } else if (resource instanceof IContainer) {
+                final IContainer container = (IContainer) resource;
                 final String fullPathString = container.getFullPath().toString();
                 res = URI.createPlatformResourceURI(fullPathString + "/" + DEFAULT_GENCONF_FILE_NAME, true);
             } else {

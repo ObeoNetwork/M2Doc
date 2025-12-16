@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018, 2024 Obeo. 
+ *  Copyright (c) 2018, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -18,11 +18,13 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
@@ -110,7 +112,8 @@ public class M2DocNewTemplateWizard extends Wizard implements INewWizard {
                     final IFile templateFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(templateName));
                     templateFile.create(source, true, monitor);
                 } catch (CoreException e) {
-                    res = new Status(IStatus.OK, M2DocUIPlugin.PLUGIN_ID, String.format(ERROR_MESSAGE, templateName), e);
+                    res = new Status(IStatus.OK, M2DocUIPlugin.PLUGIN_ID, String.format(ERROR_MESSAGE, templateName),
+                            e);
                 }
             } catch (InvalidFormatException e) {
                 res = new Status(IStatus.OK, M2DocUIPlugin.PLUGIN_ID, String.format(ERROR_MESSAGE, templateName), e);
@@ -140,10 +143,14 @@ public class M2DocNewTemplateWizard extends Wizard implements INewWizard {
 
     @Override
     public void init(IWorkbench workbench, IStructuredSelection selection) {
-        if (selection.getFirstElement() instanceof IFile) {
-            defaultTempateName = ((IFile) selection.getFirstElement()).getParent().getFullPath() + "/template.docx";
-        } else if (selection.getFirstElement() instanceof IContainer) {
-            defaultTempateName = ((IContainer) selection.getFirstElement()).getFullPath() + "/template.docx";
+        if (selection.getFirstElement() != null) {
+            final IResource resource = Platform.getAdapterManager().getAdapter(selection.getFirstElement(),
+                    IResource.class);
+            if (resource instanceof IFile) {
+                defaultTempateName = resource.getParent().getFullPath() + "/template.docx";
+            } else if (resource instanceof IContainer) {
+                defaultTempateName = resource.getFullPath() + "/template.docx";
+            }
         }
     }
 
