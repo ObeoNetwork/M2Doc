@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _OvN3oIvEEe-XVvXOlTYmPQ
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/16/24, 6:10 PM
+Save-Time: 12/16/25, 4:03 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -36,7 +36,6 @@ with [get-window "Generation configuration"] {
         get-table 
             | select ".*asImageByRepresentationDescriptionName-template.docx" 
             | double-click
-        get-button OK | click -metaKeys ""
     }
 }
 get-window "Generation configuration" | get-group "Relative to generation file" | get-editbox 
