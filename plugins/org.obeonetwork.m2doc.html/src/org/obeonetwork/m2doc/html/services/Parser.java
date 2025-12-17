@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2021, 2024 Obeo. 
+ *  Copyright (c) 2021, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -480,12 +480,12 @@ public abstract class Parser {
      *            the image size attribute
      * @return the relative size if it's relative, <code>-1</code> otherwise
      */
-    protected int getRelativeSize(String size) {
-        final int res;
+    protected double getRelativeSize(String size) {
+        final double res;
 
         final int percentIndex = size.indexOf(PERCENT);
         if (percentIndex >= 0) {
-            res = Integer.valueOf(size.substring(0, percentIndex));
+            res = Double.valueOf(size.substring(0, percentIndex));
         } else {
             res = -1;
         }
@@ -502,9 +502,9 @@ public abstract class Parser {
      *            the width
      */
     protected void setCellWidth(MCell mCell, String width) {
-        final int relativeWidth = getRelativeSize(width);
+        final double relativeWidth = getRelativeSize(width);
         if (relativeWidth != -1) {
-            mCell.setWidth(relativeWidth * RELATIVE_CELL_WIDTH_MULTIPLIER);
+            mCell.setWidth((int) relativeWidth * RELATIVE_CELL_WIDTH_MULTIPLIER);
             mCell.setWidthType(WidthType.PCT);
         } else {
             int pixels = getPixels(width);
@@ -532,7 +532,7 @@ public abstract class Parser {
      *            the height
      */
     protected void setRowHeight(MRow row, String height) {
-        final int relativeHeight = getRelativeSize(height);
+        final double relativeHeight = getRelativeSize(height);
         if (relativeHeight == -1) {
             int pixels = getPixels(height);
             if (pixels == -1) {
@@ -583,9 +583,9 @@ public abstract class Parser {
      *            the height
      */
     private void setImageHeight(final MImage mImage, final String height) {
-        final int relativeHeight = getRelativeSize(height);
+        final double relativeHeight = getRelativeSize(height);
         if (relativeHeight != -1) {
-            mImage.setRelativeHeight(relativeHeight);
+            mImage.setRelativeHeight((int) relativeHeight);
         } else {
             int pixels = getPixels(height);
             if (pixels == -1) {
@@ -610,9 +610,9 @@ public abstract class Parser {
      *            the width
      */
     private void setImageWidth(final MImage mImage, final String width) {
-        final int relativeWidth = getRelativeSize(width);
+        final double relativeWidth = getRelativeSize(width);
         if (relativeWidth != -1) {
-            mImage.setRelativeWidth(relativeWidth);
+            mImage.setRelativeWidth((int) relativeWidth);
         } else {
             int pixels = getPixels(width);
             if (pixels == -1) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2021, 2024 Obeo. 
+ *  Copyright (c) 2021, 2025 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -407,18 +407,6 @@ public class M2DocCSSParser extends Parser {
             cssProperties.putAll(cssStyleProperties);
         }
         return cssProperties;
-    }
-
-    /**
-     * Parses the given CSS "style" attribute.
-     * 
-     * @param cssStyle
-     *            the CSS style attribute
-     * @return the mapping of CSS key to values
-     * @deprecated see {@link #parseStyles(String)}
-     */
-    public Map<String, List<String>> parse(String cssStyle) {
-        return parseStyles(cssStyle);
     }
 
     /**

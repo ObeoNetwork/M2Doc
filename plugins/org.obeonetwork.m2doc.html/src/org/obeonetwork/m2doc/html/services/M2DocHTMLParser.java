@@ -986,21 +986,22 @@ public class M2DocHTMLParser extends Parser {
         if (node instanceof Element) {
             if ("table".equals(node.nodeName())) {
                 Node tHeader = null;
+                Node tBody = null;
+                Node colGroup = null;
                 for (Node child : node.childNodes()) {
                     if ("thead".equals(child.nodeName())) {
                         tHeader = child;
-                        break;
-                    }
-                }
-                Node tBody = null;
-                for (Node child : node.childNodes()) {
-                    if ("tbody".equals(child.nodeName())) {
+                    } else if ("tbody".equals(child.nodeName())) {
                         tBody = child;
+                    } else if ("colgroup".equals(child.nodeName())) {
+                        colGroup = child;
+                    }
+                    if (tHeader != null && tBody != null && colGroup != null) {
                         break;
                     }
                 }
                 if (tBody != null) {
-                    insertTable(parent, context, tHeader, tBody);
+                    insertTable(parent, context, tHeader, tBody, colGroup);
                 }
             } else if (SVG_TAG.equals(node.nodeName())) {
                 final MImageImpl mImage = new MImageImpl(svgs.get(svgIndex++).getBytes(StandardCharsets.UTF_8),
@@ -1167,11 +1168,13 @@ public class M2DocHTMLParser extends Parser {
      * @param context
      *            the current {@link Context}
      * @param header
-     *            the table header {@link Node};
+     *            the table header {@link Node}
      * @param body
-     *            the table body {@link Node};
+     *            the table body {@link Node}
+     * @param colGroup
+     *            the colgroup {@link Node}
      */
-    private void insertTable(MParagraph parent, Context context, Node header, Node body) {
+    private void insertTable(MParagraph parent, Context context, Node header, Node body, Node colGroup) {
         final MTable table = new MTableImpl();
         final MList parentContents = (MList) parent.getContents();
         parentContents.add(table);
@@ -1184,6 +1187,11 @@ public class M2DocHTMLParser extends Parser {
             childNodes.addAll(body.childNodes());
         } else {
             childNodes = new ArrayList<>(body.childNodes());
+        }
+
+        final Map<Integer, Map<String, List<String>>> colgroupStyles = new HashMap<Integer, Map<String, List<String>>>();
+        if (colGroup != null) {
+            colgroupStyles.putAll(getColGroupCSS(colGroup));
         }
 
         boolean lastRowHasPendingVMerge = false;
@@ -1213,6 +1221,10 @@ public class M2DocHTMLParser extends Parser {
                         if (rowChild.hasAttr(WIDTH_ATTR)) {
                             setCellWidth(cell, rowChild.attr(WIDTH_ATTR));
                         }
+                        final Map<String, List<String>> colGroupStyle = colgroupStyles.get(row.getCells().size());
+                        if (colGroupStyle != null) {
+                            applyCSSStyle(colGroupStyle, localCellContext);
+                        }
                         CSS_PARSER.setStyle(localCellContext.cssProperties, cell);
                         walkChildren(rowChild, localCellContext, newParagraph);
                         createNeededParagraphes(newParagraph);
@@ -1238,6 +1250,37 @@ public class M2DocHTMLParser extends Parser {
                 lastRow = row;
             }
         }
+    }
+
+    /**
+     * Gets the given colgroup CSS for each column.
+     * 
+     * @param colgroup
+     *            the colgroup {@link Node}
+     * @return the given colgroup CSS for each column
+     */
+    private Map<Integer, Map<String, List<String>>> getColGroupCSS(Node colgroup) {
+        Map<Integer, Map<String, List<String>>> res = new HashMap<Integer, Map<String, List<String>>>();
+
+        int index = 0;
+        for (Node child : colgroup.childNodes()) {
+            if ("col".equals(child.nodeName())) {
+                final Map<String, List<String>> cssProperties = CSS_PARSER.getCSSProperties(child, cssClasses);
+                int span = 1;
+                if (child.hasAttr(SPAN_TAG)) {
+                    try {
+                        span = Integer.parseInt(child.attr(SPAN_TAG));
+                    } catch (NumberFormatException e) {
+                        // nothing to do here, we will keep a span of 1
+                    }
+                }
+                for (int i = 0; i < span; i++) {
+                    res.put(index++, cssProperties);
+                }
+            }
+        }
+
+        return res;
     }
 
     /**
@@ -1799,9 +1842,21 @@ public class M2DocHTMLParser extends Parser {
     private void applyCSSStyle(Node node, Context context) {
         final Map<String, List<String>> cssProperties = CSS_PARSER.getCSSProperties(node, cssClasses);
         if (!cssProperties.isEmpty()) {
-            CSS_PARSER.setStyle(cssProperties, context.style);
-            context.cssProperties.putAll(cssProperties);
+            applyCSSStyle(cssProperties, context);
         }
+    }
+
+    /**
+     * Applies the CSS from the style mapping to the given {@link Context}.
+     * 
+     * @param cssProperties
+     *            CSS properties mapping
+     * @param context
+     *            the current {@link Context}
+     */
+    private void applyCSSStyle(Map<String, List<String>> cssProperties, Context context) {
+        CSS_PARSER.setStyle(cssProperties, context.style);
+        context.cssProperties.putAll(cssProperties);
     }
 
     /**
