@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Localization: plugin
 Bundle-SymbolicName: org.obeonetwork.m2doc.html
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 4.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: %providerName
 Bundle-ClassPath: .
