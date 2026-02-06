@@ -36,6 +36,8 @@
 #---TAG---
   - title: 4.0.0
     file: ref-doc/4.0.0/index
+  - title: 3.3.5
+    file: ref-doc/3.3.5/index
   - title: 3.3.4
     file: ref-doc/3.3.4/index
   - title: 3.3.3
