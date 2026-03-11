@@ -1,0 +1,13 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a query :
+  [query: .asBookmark('Bookmark ID1', 'ID1')]
+  ***************************
+  [query: .fromHTMLURI('doc.html')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
