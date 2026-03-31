@@ -771,7 +771,7 @@ You can use M2Doc in your maven project with the following repository and depend
 <repositories>
   <repository>
     <id>Acceleo Repository</id>
-    <url>https://download.eclipse.org/acceleo/updates/releases/4.1/...</url>
+    <url>https://download.eclipse.org/acceleo/updates/releases/4.2/...</url>
   </repository>
   <repository>
     <id>M2Doc Repository</id>
