@@ -765,7 +765,7 @@ final List<URI> generatedURIs = GenconfUtils.generate(generation, m2docEnv, opti
 
 ## Maven
 
-You can use M2Doc in your maven project with the following repository and dependency:
+You can use M2Doc in your maven project with the following repositories and dependency:
 
 {% highlight XML %}
 <repositories>
@@ -782,7 +782,7 @@ You can use M2Doc in your maven project with the following repository and depend
   <dependency>
     <groupId>org.obeonetwork.m2doc</groupId>
     <artifactId>m2doc</artifactId>
-    <version>4.1.0</version>
+    <version>5.0.0</version>
   </dependency>
 </dependencies>
 {% endhighlight %}
