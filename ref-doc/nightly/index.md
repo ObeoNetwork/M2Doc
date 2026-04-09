@@ -636,13 +636,19 @@ One example where this is useful is when you need to provide some document to se
 
 ## Template migration
 
-The template format has changed between version 3.x and 4.x. In version 3.x M2Doc statements were stored in MS Word fields that could be visualized with `ALT+F9` and inserted with `CTRL+F9`. Since version 4.x the fields has been replaced by plain text (`{m:...}`).
-
 You can migrate your template toward the current version of M2Doc by right clicking on the template an selecting the `Migrate template` menu.
 
 ![The migrate template menu.]({{page.relativePath}}/ref-doc/nightly/images/Migrate%20template%20menu.png "The migrate template menu.")
 
 This menu is only available if the template needs to be migrated according to its version number (see the [Template properties wizard](index.html#template-properties-wizard) section).
+
+### version 4.x
+
+The template format has changed between version 3.x and 4.x. In version 3.x M2Doc statements were stored in MS Word fields that could be visualized with `ALT+F9` and inserted with `CTRL+F9`. Since version 4.x the fields has been replaced by plain text (`{m:...}`).
+
+### version 5.x
+
+If you have [custom services](index.html#providing-new-services), your template now needs to be in a Java project with a dependency to the project containing the service Java class.
 
 ## Extension points
 

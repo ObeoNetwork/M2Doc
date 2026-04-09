@@ -56,7 +56,10 @@
 			</topic>
 			<topic href="doc/ref-doc/nightly/index.html#template" label="Template"></topic>
 		</topic>
-		<topic href="doc/ref-doc/nightly/index.html#template-migration" label="Template migration"></topic>
+		<topic href="doc/ref-doc/nightly/index.html#template-migration" label="Template migration">
+			<topic href="doc/ref-doc/nightly/index.html#version-4-x" label="version 4.x"></topic>
+			<topic href="doc/ref-doc/nightly/index.html#version-5-x" label="version 5.x"></topic>
+		</topic>
 		<topic href="doc/ref-doc/nightly/index.html#extension-points" label="Extension points">
 			<topic href="doc/ref-doc/nightly/index.html#services-and-packages-token" label="Services and packages token"></topic>
 			<topic href="doc/ref-doc/nightly/index.html#template-registry" label="Template registry">
