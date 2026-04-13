@@ -254,11 +254,13 @@ public final class GenconfUtils {
                 for (EObject eObj : ((ModelSequenceDefinition) def).getValue()) {
                     value.add(getEObjectValue(resourceSetForModels, eObj));
                 }
+                result.put(def.getKey(), value);
             } else if (def instanceof ModelOrderedSetDefinition) {
                 final List<EObject> value = new ArrayList<>();
                 for (EObject eObj : ((ModelOrderedSetDefinition) def).getValue()) {
                     value.add(getEObjectValue(resourceSetForModels, eObj));
                 }
+                result.put(def.getKey(), value);
             } else if (def instanceof StringDefinition) {
                 result.put(def.getKey(), ((StringDefinition) def).getValue());
             } else if (def instanceof StringSequenceDefinition) {

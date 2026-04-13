@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,6 +30,8 @@ import org.obeonetwork.m2doc.genconf.GenconfPackage;
 import org.obeonetwork.m2doc.genconf.GenconfUtils;
 import org.obeonetwork.m2doc.genconf.Generation;
 import org.obeonetwork.m2doc.genconf.ModelDefinition;
+import org.obeonetwork.m2doc.genconf.ModelOrderedSetDefinition;
+import org.obeonetwork.m2doc.genconf.ModelSequenceDefinition;
 import org.obeonetwork.m2doc.genconf.Option;
 import org.obeonetwork.m2doc.genconf.StringDefinition;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
@@ -429,4 +432,33 @@ public class GenconfUtilsTests {
         }
     }
 
+    @Test
+    public void getVariablesModelSequenceDefinition() {
+        final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
+        final ModelSequenceDefinition def = GenconfPackage.eINSTANCE.getGenconfFactory()
+                .createModelSequenceDefinition();
+        def.setKey("myVar");
+        // add EObject values...
+        generation.getDefinitions().add(def);
+
+        final Map<String, Object> variables = GenconfUtils.getVariables(generation, new ResourceSetImpl());
+
+        assertTrue(variables.containsKey("myVar"));
+        assertTrue(variables.get("myVar") instanceof List);
+    }
+
+    @Test
+    public void getVariablesModelOrderedSetDefinition() {
+        final Generation generation = GenconfPackage.eINSTANCE.getGenconfFactory().createGeneration();
+        final ModelOrderedSetDefinition def = GenconfPackage.eINSTANCE.getGenconfFactory()
+                .createModelOrderedSetDefinition();
+        def.setKey("myVar");
+        // add EObject values...
+        generation.getDefinitions().add(def);
+
+        final Map<String, Object> variables = GenconfUtils.getVariables(generation, new ResourceSetImpl());
+
+        assertTrue(variables.containsKey("myVar"));
+        assertTrue(variables.get("myVar") instanceof List);
+    }
 }
