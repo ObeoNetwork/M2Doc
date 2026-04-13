@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2019, 2025 Obeo. 
+ *  Copyright (c) 2019, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -56,10 +56,10 @@ import org.obeonetwork.m2doc.genconf.ModelDefinition;
 import org.obeonetwork.m2doc.genconf.presentation.M2docconfEditorPlugin;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
+import org.obeonetwork.m2doc.ide.services.namespace.EclipseM2DocDocumentTemplateLoader;
 import org.obeonetwork.m2doc.ide.ui.wizard.M2DocMainVariablePage;
 import org.obeonetwork.m2doc.ide.ui.wizard.M2DocNewTemplatePage;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
-import org.obeonetwork.m2doc.services.namespace.M2DocDocumentTemplateLoader;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.obeonetwork.m2doc.util.MemoryURIHandler;
 
@@ -177,7 +177,7 @@ public class M2DocNewProjectWizard extends Wizard implements INewWizard {
                         M2DocEvaluationEnvironment m2docEnv = GenconfUtils.createM2DocEvaluationEnvironment(generation,
                                 resolver, resourceSetForModel);
 
-                        resolver.addLoader(new M2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(),
+                        resolver.addLoader(new EclipseM2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(),
                                 M2DocUtils.QUALIFIER_SEPARATOR));
                         final ILoader javaLoader = new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false);
                         resolver.addLoader(javaLoader);

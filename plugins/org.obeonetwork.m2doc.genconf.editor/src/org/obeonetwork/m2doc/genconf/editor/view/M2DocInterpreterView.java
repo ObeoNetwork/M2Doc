@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2021, 2025 Obeo. 
+ *  Copyright (c) 2021, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -107,9 +107,9 @@ import org.obeonetwork.m2doc.genconf.editor.view.aql.ProposalLabelProvider;
 import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
 import org.obeonetwork.m2doc.generator.M2DocValidator;
 import org.obeonetwork.m2doc.ide.M2DocPlugin;
+import org.obeonetwork.m2doc.ide.services.namespace.EclipseM2DocDocumentTemplateLoader;
 import org.obeonetwork.m2doc.services.M2DocTemplateService;
 import org.obeonetwork.m2doc.services.configurator.IM2DocServicesConfigurator;
-import org.obeonetwork.m2doc.services.namespace.M2DocDocumentTemplateLoader;
 import org.obeonetwork.m2doc.template.DocumentTemplate;
 import org.obeonetwork.m2doc.template.Let;
 import org.obeonetwork.m2doc.template.Parameter;
@@ -126,11 +126,11 @@ import org.obeonetwork.m2doc.util.M2DocUtils;
 public class M2DocInterpreterView extends ViewPart {
 
     /**
-     * Interpreter {@link M2DocDocumentTemplateLoader} that cache the serialized version of the {@link DocumentTemplate}.
+     * Interpreter {@link EclipseM2DocDocumentTemplateLoader} that cache the serialized version of the {@link DocumentTemplate}.
      * 
      * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
      */
-    private final class InterpreterLoader extends M2DocDocumentTemplateLoader {
+    private final class InterpreterLoader extends EclipseM2DocDocumentTemplateLoader {
 
         /**
          * The cached serialized {@link DocumentTemplate}.
@@ -729,6 +729,7 @@ public class M2DocInterpreterView extends ViewPart {
                 resolver.addLoader(new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false));
 
                 resolver.register(qualifiedName, documentTemplate);
+                M2DocPlugin.getPlugin().loadServicesFromWorkspace(m2docEnv, documentTemplate);
                 resolver.getLookupEngine().pushImportsContext(qualifiedName, qualifiedName);
 
                 M2DocUtils.prepareEnvironment(queryEnvironment, ePackageregistry, documentTemplate);

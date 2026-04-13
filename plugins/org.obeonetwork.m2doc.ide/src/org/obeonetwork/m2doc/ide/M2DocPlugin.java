@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2025 Obeo. 
+ *  Copyright (c) 2016, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -12,14 +12,34 @@
 
 package org.obeonetwork.m2doc.ide;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.eclipse.acceleo.query.ide.QueryPlugin;
+import org.eclipse.acceleo.query.ide.runtime.impl.namespace.OSGiQualifiedNameResolver;
+import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.impl.namespace.JavaLoader;
+import org.eclipse.acceleo.query.runtime.namespace.ILoader;
+import org.eclipse.acceleo.query.runtime.namespace.IQualifiedNameResolver;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
+import org.obeonetwork.m2doc.ide.services.namespace.EclipseM2DocDocumentTemplateLoader;
+import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
+import org.obeonetwork.m2doc.template.DocumentTemplate;
+import org.obeonetwork.m2doc.util.M2DocUtils;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
+import org.osgi.framework.BundleListener;
 
 /**
  * Plugin's activator class.
@@ -78,6 +98,19 @@ public class M2DocPlugin extends EMFPlugin {
         private DeclaredTemplatesListener templatesListener = new DeclaredTemplatesListener();
 
         /**
+         * The {@link Map} of {@link Bundle#getSymbolicName() bundle name} to {@link Bundle}.
+         */
+        // TODO add version ?
+        private final Map<String, Bundle> bundles = new HashMap<>();
+
+        /**
+         * The {@link BundleListener} keeping track of {@link BundleEvent#INSTALLED installed} and {@link BundleEvent#UNINSTALLED
+         * uninstalled}
+         * {@link Bundle}.
+         */
+        private final BundleListener bundleListener;
+
+        /**
          * Create the Eclipse Implementation.
          */
         public Implementation() {
@@ -89,6 +122,29 @@ public class M2DocPlugin extends EMFPlugin {
             // Remember the static instance.
             //
             plugin = this;
+
+            bundleListener = new BundleListener() {
+
+                @Override
+                public void bundleChanged(BundleEvent event) {
+                    final Bundle bundle = event.getBundle();
+                    switch (event.getType()) {
+                        case BundleEvent.INSTALLED:
+                            bundles.put(bundle.getSymbolicName(), bundle);
+                            break;
+
+                        case BundleEvent.UNINSTALLED:
+                            bundles.remove(bundle.getSymbolicName());
+                            break;
+
+                        default:
+                            // nothing to do here
+                            break;
+                    }
+                }
+
+            };
+
         }
 
         @Override
@@ -100,6 +156,11 @@ public class M2DocPlugin extends EMFPlugin {
             registry.addListener(templatesListener, DeclaredTemplatesListener.TEMPLATE_REGISTERY_EXTENSION_POINT);
             templatesListener.parseInitialContributions();
             bundlerContext = context;
+            for (Bundle bundle : context.getBundles()) {
+                bundles.put(bundle.getSymbolicName(), bundle);
+            }
+
+            context.addBundleListener(bundleListener);
         }
 
         @Override
@@ -107,7 +168,78 @@ public class M2DocPlugin extends EMFPlugin {
             super.stop(context);
             final IExtensionRegistry registry = Platform.getExtensionRegistry();
             registry.removeListener(servicesListener);
-            // TODO clear registry and registryListener ?
+            registry.removeListener(templatesListener);
+            // TODO clear registries ?
+            context.removeBundleListener(bundleListener);
+            bundles.clear();
+        }
+
+        /**
+         * Loads imported services from the workspace.
+         * 
+         * @param m2docEnv
+         *            the {@link M2DocEvaluationEnvironment}
+         * @param documentTemplate
+         *            the {@link DocumentTemplate}
+         */
+        public void loadServicesFromWorkspace(M2DocEvaluationEnvironment m2docEnv,
+                final DocumentTemplate documentTemplate) {
+            final TemplateCustomProperties properties = documentTemplate.getProperties();
+            // bundle name to resolver
+            final Map<String, IQualifiedNameResolver> eclipseResolvers = new HashMap<>();
+            if (properties != null) {
+                IQualifiedNameResolver resolver = m2docEnv.getResolver();
+                for (Entry<String, String> entry : properties.getImports().entrySet()) {
+                    final String importedQualifiedName = entry.getKey();
+                    final Object resolved = resolver.resolve(importedQualifiedName);
+                    final String bundleName = entry.getValue();
+                    if (resolved == null && bundleName != null) {
+                        IQualifiedNameResolver eclipseResolver = eclipseResolvers.computeIfAbsent(bundleName,
+                                bn -> createResolver(m2docEnv, bn));
+                        if (eclipseResolver != null) {
+                            final Object eclipseResolved = eclipseResolver.resolve(importedQualifiedName);
+                            resolver.register(importedQualifiedName, eclipseResolved);
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * Creates the {@link IQualifiedNameResolver} for the given bundle name.
+         * 
+         * @param m2docEnv
+         *            the {@link M2DocEvaluationEnvironment}
+         * @param bundleName
+         *            the bundle name
+         * @return the created {@link IQualifiedNameResolver}
+         */
+        private IQualifiedNameResolver createResolver(M2DocEvaluationEnvironment m2docEnv, String bundleName) {
+            final IQualifiedNameResolver result;
+
+            final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(bundleName);
+            if (project != null) {
+                result = QueryPlugin.getPlugin().createQualifiedNameResolver(getClass().getClassLoader(), null, project,
+                        M2DocUtils.QUALIFIER_SEPARATOR, false);
+                result.addLoader(new EclipseM2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(),
+                        M2DocUtils.QUALIFIER_SEPARATOR));
+                final ILoader javaLoader = new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false);
+                result.addLoader(javaLoader);
+            } else {
+                final Bundle bundle = bundles.get(bundleName);
+                if (bundle != null) {
+                    result = new OSGiQualifiedNameResolver(bundle, null, M2DocUtils.QUALIFIER_SEPARATOR);
+                    result.addLoader(new EclipseM2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(),
+                            M2DocUtils.QUALIFIER_SEPARATOR));
+                    final ILoader javaLoader = new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false);
+                    result.addLoader(javaLoader);
+                    Query.newQualifiedNameEnvironment(result);
+                } else {
+                    result = null;
+                }
+            }
+
+            return result;
         }
 
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2018, 2025 Obeo. 
+ *  Copyright (c) 2018, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -159,9 +159,8 @@ public class TokenRegistryTests {
             Iterator<String> it = properties.getPackagesURIs().iterator();
             assertEquals("package3", it.next());
             assertEquals("package2", it.next());
-            it = properties.getImports().iterator();
-            assertEquals("someClass3", it.next());
-            assertEquals("someClass2", it.next());
+            assertEquals("someBundle", properties.getImports().get("someClass3"));
+            assertEquals("someBundle", properties.getImports().get("someClass2"));
         }
 
     }

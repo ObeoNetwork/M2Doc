@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2025 Obeo. 
+ *  Copyright (c) 2016, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -56,6 +56,67 @@ import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProper
  * @author Romain Guider
  */
 public class TemplateCustomProperties {
+
+    /**
+     * An {@link Entry} to store the extended qualified name and its bundle name.
+     * 
+     * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+     */
+    private static class ExtendsEntry implements Entry<String, String> {
+
+        /**
+         * The extended qualified name.
+         */
+        private String qualifiedName;
+
+        /**
+         * The bundle name.
+         */
+        private String bundleName;
+
+        /**
+         * Constructor.
+         * 
+         * @param qualifiedName
+         *            the qualified name
+         * @param bundleName
+         *            the bundle name
+         */
+        ExtendsEntry(String qualifiedName, String bundleName) {
+            this.qualifiedName = qualifiedName;
+            this.bundleName = bundleName;
+        }
+
+        @Override
+        public String getKey() {
+            return qualifiedName;
+        }
+
+        /**
+         * Sets the qualified name.
+         * 
+         * @param key
+         *            the qualified name
+         */
+        public void setKey(String key) {
+            qualifiedName = key;
+        }
+
+        @Override
+        public String getValue() {
+            return bundleName;
+        }
+
+        @Override
+        public String setValue(String value) {
+            final String oldBundleName = bundleName;
+
+            bundleName = value;
+
+            return oldBundleName;
+        }
+
+    }
 
     /**
      * id of the String type to use in variable declaration properties.
@@ -115,7 +176,12 @@ public class TemplateCustomProperties {
     /**
      * The extend property.
      */
-    public static final String EXTEND_PROPERTY = "m:extend";
+    public static final String EXTEND_PROPERTY_PREFIX = "m:extend:";
+
+    /**
+     * Prefix of the extend custom properties length.
+     */
+    public static final int EXTEND_PROPERTY_PREFIX_LENGTH = EXTEND_PROPERTY_PREFIX.length();
 
     /**
      * The validation name {@link Pattern}.
@@ -138,14 +204,14 @@ public class TemplateCustomProperties {
     private final Set<String> nsURIs = new LinkedHashSet<>();
 
     /**
-     * The {@link Set} of imported qualified name.
+     * The {@link Map} of service qualified name to bundle name (needed for Eclipse workspace mode).
      */
-    private final Set<String> imports = new LinkedHashSet<>();
+    private final Map<String, String> imports = new LinkedHashMap<>();
 
     /**
-     * The extended qualified name if any, <code>null</code> otherwise.
+     * The extended qualified name and its bundle name if any, <code>null</code> otherwise.
      */
-    private String extend;
+    private ExtendsEntry extend;
 
     /**
      * The {@link XWPFDocument}.
@@ -184,8 +250,14 @@ public class TemplateCustomProperties {
                 continue;
             }
 
-            if (EXTEND_PROPERTY.equals(propertyName) && property.getLpwstr() != null) {
-                extend = property.getLpwstr().trim();
+            final String extendQualifiedName = getExtendQualifiedName(propertyName);
+            if (extendQualifiedName != null) {
+                final String bundleName = property.getLpwstr();
+                if (!bundleName.isEmpty()) {
+                    extend = new ExtendsEntry(extendQualifiedName, bundleName);
+                } else {
+                    extend = new ExtendsEntry(extendQualifiedName, null);
+                }
                 continue;
             }
 
@@ -195,9 +267,10 @@ public class TemplateCustomProperties {
                 continue;
             }
 
-            final String qualifiedName = getImportQualifiedName(propertyName);
-            if (qualifiedName != null) {
-                imports.add(qualifiedName);
+            final String importQualifiedName = getImportQualifiedName(propertyName);
+            if (importQualifiedName != null) {
+                final String bundleName = property.getLpwstr();
+                imports.put(importQualifiedName, bundleName);
                 continue;
             }
 
@@ -219,7 +292,7 @@ public class TemplateCustomProperties {
         final List<Integer> indexToDelete = new ArrayList<>();
         int currentIndex = 0;
         List<String> tmpNsURI = new ArrayList<>(nsURIs);
-        Set<String> tmpServiceImports = new LinkedHashSet<>(imports);
+        Map<String, String> tmpServiceImports = new LinkedHashMap<>(imports);
         Map<String, String> tmpVars = new LinkedHashMap<>(variables);
         boolean versionAdded = false;
         boolean extendAdded = false;
@@ -231,13 +304,22 @@ public class TemplateCustomProperties {
                 versionAdded = true;
             }
 
-            if (EXTEND_PROPERTY.equals(propertyName)) {
+            final String extendQualifiedName = getExtendQualifiedName(propertyName);
+            if (extendQualifiedName != null) {
+
                 if (extend != null) {
-                    property.setLpwstr(extend);
+                    property.setName(EXTEND_PROPERTY_PREFIX + extend.getKey());
+                    if (extend.getValue() != null) {
+                        property.setLpwstr(extend.getValue());
+                    } else {
+                        property.setLpwstr("");
+                    }
                 } else {
                     indexToDelete.add(currentIndex);
                 }
+                currentIndex++;
                 extendAdded = true;
+                continue;
             }
 
             final String nsURI = getNsURI(propertyName);
@@ -249,9 +331,12 @@ public class TemplateCustomProperties {
                 continue;
             }
 
-            final String qualifiedName = getImportQualifiedName(propertyName);
-            if (qualifiedName != null) {
-                if (!tmpServiceImports.remove(qualifiedName)) {
+            final String importQualifiedName = getImportQualifiedName(propertyName);
+            if (importQualifiedName != null) {
+                final String bundleName = tmpServiceImports.remove(importQualifiedName);
+                if (bundleName != null) {
+                    property.setLpwstr(bundleName);
+                } else {
                     indexToDelete.add(currentIndex);
                 }
                 currentIndex++;
@@ -270,23 +355,27 @@ public class TemplateCustomProperties {
             currentIndex++;
         }
 
+        for (int i = indexToDelete.size() - 1; i > -1; i--) {
+            props.getUnderlyingProperties().removeProperty(indexToDelete.get(i));
+        }
+
         if (!versionAdded) {
             props.addProperty(M2DOC_VERSION_PROPERTY, m2DocVersion);
         }
 
         if (!extendAdded && extend != null) {
-            props.addProperty(EXTEND_PROPERTY, extend);
-        }
-
-        for (int i = indexToDelete.size() - 1; i > -1; i--) {
-            props.getUnderlyingProperties().removeProperty(indexToDelete.get(i));
+            if (extend.getValue() != null) {
+                props.addProperty(EXTEND_PROPERTY_PREFIX + extend.getKey(), extend.getValue());
+            } else {
+                props.addProperty(EXTEND_PROPERTY_PREFIX + extend.getKey(), "");
+            }
         }
 
         for (String nsURI : tmpNsURI) {
             props.addProperty(URI_PROPERTY_PREFIX + nsURI, "");
         }
-        for (String qualifiedName : tmpServiceImports) {
-            props.addProperty(IMPORT_PROPERTY_PREFIX + qualifiedName, "");
+        for (Entry<String, String> entry : tmpServiceImports.entrySet()) {
+            props.addProperty(IMPORT_PROPERTY_PREFIX + entry.getKey(), entry.getValue());
         }
         for (Entry<String, String> entry : tmpVars.entrySet()) {
             props.addProperty(VAR_PROPERTY_PREFIX + entry.getKey(), entry.getValue());
@@ -334,6 +423,26 @@ public class TemplateCustomProperties {
     }
 
     /**
+     * Gets the {@link Class#getName() class name} from the given {@link CTProperty#getName() property name}.
+     * 
+     * @param propertyName
+     *            the {@link CTProperty#getName() property name}
+     * @return the {@link Class#getName() class name} from the given {@link CTProperty#getName() property name} if any, <code>null</code>
+     *         otherwise
+     */
+    private String getExtendQualifiedName(String propertyName) {
+        final String res;
+
+        if (propertyName.startsWith(EXTEND_PROPERTY_PREFIX) && propertyName.length() > EXTEND_PROPERTY_PREFIX_LENGTH) {
+            res = propertyName.substring(EXTEND_PROPERTY_PREFIX_LENGTH).trim();
+        } else {
+            res = null;
+        }
+
+        return res;
+    }
+
+    /**
      * Gets the variable name from the given {@link CTProperty#getName() property name}.
      * 
      * @param propertyName
@@ -372,31 +481,37 @@ public class TemplateCustomProperties {
     }
 
     /**
-     * Gets the {@link Set} or imported qualified name.
+     * Gets the {@link Map} of service qualified name to bundle name (needed for Eclipse workspace mode).
      * 
-     * @return the {@link Set} or imported qualified name
+     * @return the {@link Map} of service qualified name to bundle name (needed for Eclipse workspace mode).
      */
-    public Set<String> getImports() {
+    public Map<String, String> getImports() {
         return imports;
     }
 
     /**
      * Gets the extended qualified name.
      * 
-     * @return the extended qualified name if any, <code>null</code> otherwise
+     * @return the extended qualified name and its bundle name if any, <code>null</code> otherwise
      */
-    public String getExtend() {
+    public Entry<String, String> getExtend() {
         return extend;
     }
 
     /**
      * Sets extend qualified name.
      * 
-     * @param extend
+     * @param qualifiedName
      *            the new extend qualified name
+     * @param bundleName
+     *            the new bundle name
      */
-    public void setExtend(String extend) {
-        this.extend = extend;
+    public void setExtend(String qualifiedName, String bundleName) {
+        if (qualifiedName != null) {
+            extend = new ExtendsEntry(qualifiedName, bundleName);
+        } else {
+            extend = null;
+        }
     }
 
     /**

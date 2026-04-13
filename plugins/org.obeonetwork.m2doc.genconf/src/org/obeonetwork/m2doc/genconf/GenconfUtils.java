@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017, 2025 Obeo. 
+ *  Copyright (c) 2017, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -60,6 +60,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.obeonetwork.m2doc.POIServices;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
+import org.obeonetwork.m2doc.ide.M2DocPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.parser.TemplateValidationMessage;
 import org.obeonetwork.m2doc.parser.ValidationMessageLevel;
@@ -733,6 +734,7 @@ public final class GenconfUtils {
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(uriConverter, templateURI, GENCONF_EXTENSION_FILE,
                 monitor)) {
             resolver.register(GENCONF_EXTENSION_FILE, documentTemplate);
+            M2DocPlugin.getPlugin().loadServicesFromWorkspace(m2docEnv, documentTemplate);
             M2DocUtils.prepareEnvironment(queryEnvironment, ePackageRegistry, documentTemplate);
             // create definitions
             Map<String, Object> definitions = GenconfUtils.getVariables(generation, resourceSetForModels);
@@ -816,6 +818,7 @@ public final class GenconfUtils {
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI,
                 GENCONF_EXTENSION_FILE, monitor)) {
             resolver.register(GENCONF_EXTENSION_FILE, documentTemplate);
+            M2DocPlugin.getPlugin().loadServicesFromWorkspace(m2DocEnv, documentTemplate);
             M2DocUtils.prepareEnvironment(queryEnvironment, resourceSetForModels.getPackageRegistry(),
                     documentTemplate);
             final XWPFRun run = documentTemplate.getDocument().getParagraphs().get(0).getRuns().get(0);

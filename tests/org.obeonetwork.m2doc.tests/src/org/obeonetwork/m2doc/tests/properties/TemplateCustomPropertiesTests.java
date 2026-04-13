@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -95,7 +95,7 @@ public class TemplateCustomPropertiesTests {
         try (XWPFDocument document = POIServices.getInstance().getXWPFDocument(URIConverter.INSTANCE,
                 URI.createFileURI("resources/document/properties/properties-template.docx"));) {
             final TemplateCustomProperties properties = new TemplateCustomProperties(document);
-            final List<String> serviceClasses = new ArrayList<>(properties.getImports());
+            final List<String> serviceClasses = new ArrayList<>(properties.getImports().keySet());
             assertEquals(2, serviceClasses.size());
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage1", serviceClasses.get(0));
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage2", serviceClasses.get(1));
@@ -154,8 +154,8 @@ public class TemplateCustomPropertiesTests {
             properties.getPackagesURIs().add("http://www.eclipse.org/meta200");
 
             assertTrue(properties.getImports().isEmpty());
-            properties.getImports().add("org.obeonetwork.m2doc.services.test.ServicePackage100");
-            properties.getImports().add("org.obeonetwork.m2doc.services.test.ServicePackage200");
+            properties.getImports().put("org.obeonetwork.m2doc.services.test.ServicePackage100", "");
+            properties.getImports().put("org.obeonetwork.m2doc.services.test.ServicePackage200", "");
 
             assertTrue(properties.getVariables().isEmpty());
             properties.getVariables().put("var100", "String");
@@ -173,7 +173,7 @@ public class TemplateCustomPropertiesTests {
             assertEquals("http://www.eclipse.org/meta100", it.next());
             assertEquals("http://www.eclipse.org/meta200", it.next());
 
-            final List<String> serviceClasses = new ArrayList<>(properties.getImports());
+            final List<String> serviceClasses = new ArrayList<>(properties.getImports().keySet());
             assertEquals(2, serviceClasses.size());
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage100", serviceClasses.get(0));
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage200", serviceClasses.get(1));
@@ -231,8 +231,8 @@ public class TemplateCustomPropertiesTests {
             properties.getPackagesURIs().add("http://www.eclipse.org/meta200");
 
             assertEquals(2, properties.getImports().size());
-            properties.getImports().add("org.obeonetwork.m2doc.services.test.ServicePackage100");
-            properties.getImports().add("org.obeonetwork.m2doc.services.test.ServicePackage200");
+            properties.getImports().put("org.obeonetwork.m2doc.services.test.ServicePackage100", "");
+            properties.getImports().put("org.obeonetwork.m2doc.services.test.ServicePackage200", "");
 
             assertEquals(3, properties.getVariables().size());
             properties.getVariables().put("var100", "String");
@@ -252,7 +252,7 @@ public class TemplateCustomPropertiesTests {
             assertEquals("http://www.eclipse.org/meta100", it.next());
             assertEquals("http://www.eclipse.org/meta200", it.next());
 
-            final List<String> serviceClasses = new ArrayList<>(properties.getImports());
+            final List<String> serviceClasses = new ArrayList<>(properties.getImports().keySet());
             assertEquals(4, serviceClasses.size());
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage1", serviceClasses.get(0));
             assertEquals("org.obeonetwork.m2doc.services.test.ServicePackage2", serviceClasses.get(1));

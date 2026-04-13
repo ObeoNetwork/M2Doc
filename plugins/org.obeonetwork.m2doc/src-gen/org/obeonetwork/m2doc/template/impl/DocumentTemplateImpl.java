@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2016, 2025 Obeo. 
+ *  Copyright (c) 2016, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -275,7 +275,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     @Override
     public EList<Block> getHeaders() {
         if (headers == null) {
-            headers = new EObjectContainmentEList<Block>(Block.class, this, TemplatePackage.DOCUMENT_TEMPLATE__HEADERS);
+            headers = new EObjectContainmentEList<>(Block.class, this, TemplatePackage.DOCUMENT_TEMPLATE__HEADERS);
         }
         return headers;
     }
@@ -289,7 +289,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     @Override
     public EList<Block> getFooters() {
         if (footers == null) {
-            footers = new EObjectContainmentEList<Block>(Block.class, this, TemplatePackage.DOCUMENT_TEMPLATE__FOOTERS);
+            footers = new EObjectContainmentEList<>(Block.class, this, TemplatePackage.DOCUMENT_TEMPLATE__FOOTERS);
         }
         return footers;
     }
@@ -435,7 +435,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
     @Override
     public EList<Template> getTemplates() {
         if (templates == null) {
-            templates = new EObjectContainmentWithInverseEList<Template>(Template.class, this,
+            templates = new EObjectContainmentWithInverseEList<>(Template.class, this,
                     TemplatePackage.DOCUMENT_TEMPLATE__TEMPLATES, TemplatePackage.TEMPLATE__DOCUMENT_TEMPLATE);
         }
         return templates;
@@ -520,7 +520,7 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
 
         final TemplateCustomProperties properties = getProperties();
         if (properties != null) {
-            final List<String> list = new ArrayList<>(properties.getImports());
+            final List<String> list = new ArrayList<>(properties.getImports().keySet());
             res = ECollections.unmodifiableEList(ECollections.asEList(list));
         } else {
             res = ECollections.emptyEList();
@@ -540,8 +540,8 @@ public class DocumentTemplateImpl extends MinimalEObjectImpl.Container implement
         final String res;
 
         final TemplateCustomProperties properties = getProperties();
-        if (properties != null) {
-            res = properties.getExtend();
+        if (properties != null && properties.getExtend() != null) {
+            res = properties.getExtend().getKey();
         } else {
             res = null;
         }

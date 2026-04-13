@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2024, 2025 Obeo. 
+ *  Copyright (c) 2024, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -53,10 +53,10 @@ import org.obeonetwork.m2doc.genconf.editor.wizard.GenerationWithTemplateLibrary
 import org.obeonetwork.m2doc.genconf.impl.GenconfFactoryImpl;
 import org.obeonetwork.m2doc.generator.DocumentGenerationException;
 import org.obeonetwork.m2doc.generator.M2DocEvaluationEnvironment;
+import org.obeonetwork.m2doc.ide.services.namespace.EclipseM2DocDocumentTemplateLoader;
 import org.obeonetwork.m2doc.ide.ui.M2DocUIPlugin;
 import org.obeonetwork.m2doc.parser.DocumentParserException;
 import org.obeonetwork.m2doc.properties.TemplateCustomProperties;
-import org.obeonetwork.m2doc.services.namespace.M2DocDocumentTemplateLoader;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 
 /**
@@ -146,8 +146,8 @@ public class GenerateWithTemplateLibrary extends AbstractHandler {
                 final M2DocEvaluationEnvironment m2docEnv = GenconfUtils.createM2DocEvaluationEnvironment(generation,
                         resolver, resourceSetForModel);
 
-                resolver.addLoader(
-                        new M2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(), M2DocUtils.QUALIFIER_SEPARATOR));
+                resolver.addLoader(new EclipseM2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(),
+                        M2DocUtils.QUALIFIER_SEPARATOR));
                 final ILoader javaLoader = new JavaLoader(M2DocUtils.QUALIFIER_SEPARATOR, false);
                 resolver.addLoader(javaLoader);
 

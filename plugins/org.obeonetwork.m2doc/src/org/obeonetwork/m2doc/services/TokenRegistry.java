@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2025 Obeo. 
+ *  Copyright (c) 2016, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -211,7 +211,7 @@ public final class TokenRegistry {
         nextToken: for (String tokenName : getRegisteredTokens()) {
             for (Entry<String, List<String>> entry : getServices(tokenName).entrySet()) {
                 for (String className : entry.getValue()) {
-                    if (!customProperties.getImports().contains(className)) {
+                    if (!customProperties.getImports().containsKey(className)) {
                         // current token is not selected
                         continue nextToken;
                     }
@@ -260,8 +260,9 @@ public final class TokenRegistry {
      */
     public void selectToken(TemplateCustomProperties customProperties, String tokenName) {
         for (Entry<String, List<String>> entry : getServices(tokenName).entrySet()) {
+            final String bundleName = entry.getKey();
             for (String cls : entry.getValue()) {
-                customProperties.getImports().add(cls);
+                customProperties.getImports().put(cls, bundleName);
             }
         }
         for (String nsURI : getPackages(tokenName)) {
