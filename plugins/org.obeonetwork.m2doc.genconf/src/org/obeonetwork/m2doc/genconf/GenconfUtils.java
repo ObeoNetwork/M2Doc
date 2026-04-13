@@ -42,6 +42,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
@@ -736,7 +737,9 @@ public final class GenconfUtils {
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(uriConverter, templateURI, GENCONF_EXTENSION_FILE,
                 monitor)) {
             resolver.register(GENCONF_EXTENSION_FILE, documentTemplate);
-            M2DocPlugin.getPlugin().loadServicesFromWorkspace(m2docEnv, documentTemplate);
+            if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+                M2DocPlugin.getPlugin().loadServicesFromWorkspace(m2docEnv, documentTemplate);
+            }
             M2DocUtils.prepareEnvironment(queryEnvironment, ePackageRegistry, documentTemplate);
             // create definitions
             Map<String, Object> definitions = GenconfUtils.getVariables(generation, resourceSetForModels);
@@ -820,7 +823,9 @@ public final class GenconfUtils {
         try (DocumentTemplate documentTemplate = M2DocUtils.parse(resourceSetForModels.getURIConverter(), templateURI,
                 GENCONF_EXTENSION_FILE, monitor)) {
             resolver.register(GENCONF_EXTENSION_FILE, documentTemplate);
-            M2DocPlugin.getPlugin().loadServicesFromWorkspace(m2DocEnv, documentTemplate);
+            if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+                M2DocPlugin.getPlugin().loadServicesFromWorkspace(m2DocEnv, documentTemplate);
+            }
             M2DocUtils.prepareEnvironment(queryEnvironment, resourceSetForModels.getPackageRegistry(),
                     documentTemplate);
             final XWPFRun run = documentTemplate.getDocument().getParagraphs().get(0).getRuns().get(0);
