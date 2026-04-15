@@ -689,6 +689,8 @@ You can launch your generation using [Maven](https://maven.apache.org/) and [Tyc
 
 This section is for developers wanting to integrate M2Doc in their own project. It will show how to use the main features of M2Doc programmatically. Since M2Doc uses AQL for expressions it can be useful to have a look at [Using AQL programmatically](https://www.eclipse.dev/acceleo/documentation/aql.html#UsingAQLprogrammatically).
 
+You will find some standalone examples in [this test folder](https://github.com/ObeoNetwork/M2Doc/tree/master/tests/maven/).
+
 ### Parsing
 
 The following sample code shows how to load a template .docx file using M2Doc:
@@ -765,7 +767,7 @@ final GenerationResult generationResult = M2DocUtils.generate(m2docEnv, document
 #### Generation configuration API
 
 {% highlight Java %}
-final Generation generation = ...; // load from a serialized EMF model or create in memory
+final Generation generation = GenconfUtils.getGeneration(resourceSetForGenconf, genconfURI);
 final List<URI> generatedURIs = GenconfUtils.generate(generation, m2docEnv, options, monitor);
 {% endhighlight %}
 
