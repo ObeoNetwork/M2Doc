@@ -218,7 +218,7 @@ public class M2DocPlugin extends EMFPlugin {
             final IQualifiedNameResolver result;
 
             final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(bundleName);
-            if (project != null) {
+            if (project.isAccessible()) {
                 result = QueryPlugin.getPlugin().createQualifiedNameResolver(getClass().getClassLoader(), null, project,
                         M2DocUtils.QUALIFIER_SEPARATOR, false);
                 result.addLoader(new EclipseM2DocDocumentTemplateLoader(m2docEnv, new BasicMonitor(),
