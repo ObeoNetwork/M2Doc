@@ -28,7 +28,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import org.apache.poi.xwpf.usermodel.XWPFAbstractNum;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFNum;
 import org.apache.poi.xwpf.usermodel.XWPFNumbering;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -61,7 +63,6 @@ import org.obeonetwork.m2doc.element.impl.MTableImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl.MCellImpl;
 import org.obeonetwork.m2doc.element.impl.MTableImpl.MRowImpl;
 import org.obeonetwork.m2doc.element.impl.MTextImpl;
-import org.obeonetwork.m2doc.services.PaginationServices;
 import org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTAbstractNum;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDecimalNumber;
@@ -71,7 +72,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTLevelText;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTLvl;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTNum;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTNumFmt;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTNumbering;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMultiLevelType;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STNumberFormat;
@@ -1985,19 +1985,30 @@ public class M2DocHTMLParser extends Parser {
      *            the {@link Context}
      */
     private void createNumbering(Context context) {
-        final CTAbstractNum res;
         final XWPFNumbering numbering = destinationDocument.createNumbering();
-        final CTNumbering ctNumbering = PaginationServices.getCTNumbering(numbering);
-        res = ctNumbering.addNewAbstractNum();
+
+        // Create CTAbstractNum using the factory to avoid duplicate when creating XWPFAbstractNum
+        CTAbstractNum res = CTAbstractNum.Factory.newInstance();
         res.addNewMultiLevelType().setVal(STMultiLevelType.HYBRID_MULTILEVEL);
-        BigInteger id = BigInteger.valueOf(ctNumbering.sizeOfAbstractNumArray() - 1);
-        res.setAbstractNumId(id);
-        final CTNum ctNum = ctNumbering.addNewNum();
-        ctNum.setNumId(BigInteger.valueOf(ctNumbering.sizeOfNumArray()));
-        ctNum.addNewAbstractNumId().setVal(id);
+        BigInteger abstractNumId = BigInteger.valueOf(numbering.getAbstractNums().size());
+        res.setAbstractNumId(abstractNumId);
+        XWPFAbstractNum newAbstractNum = new XWPFAbstractNum(res);
+        BigInteger finalAbsId = numbering.addAbstractNum(newAbstractNum);
+
+        // Update the reference (that was changed through addAbstractNum)
+        res = newAbstractNum.getCTAbstractNum();
+        newAbstractNum.setNumbering(numbering);
+
+        final CTNum ctNum = CTNum.Factory.newInstance();
+        ctNum.addNewAbstractNumId().setVal(finalAbsId);
+        BigInteger numId = BigInteger.valueOf(numbering.getNums().size() + 1);
+        ctNum.setNumId(numId);
+        XWPFNum newNum = new XWPFNum(ctNum);
+        newNum.setNumbering(numbering);
+        numbering.addNum(newNum);
 
         context.numbering = res;
-        context.numberingID = ctNum.getNumId();
+        context.numberingID = numId;
     }
 
     /**
