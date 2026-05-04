@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2025 Obeo. 
+ *  Copyright (c) 2016, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -367,16 +367,20 @@ public class RawCopier {
     @SuppressWarnings("resource")
     private BigInteger copyNumID(IBody inputBody, IBody outputBody, BigInteger inputNumID) {
         final XWPFDocument inputDocument = inputBody.getXWPFDocument();
-        final XWPFDocument ouptutDocument = outputBody.getXWPFDocument();
+        final XWPFDocument outputDocument = outputBody.getXWPFDocument();
 
         final BigInteger numId = inputDocument.getNumbering().getAbstractNumID(inputNumID);
+        if (numId == null) {
+            // If it's not found in the template, check in the generated document (implicit numbering from template constructs)
+            return outputDocument.getNumbering().getAbstractNumID(inputNumID);
+        }
         final XWPFAbstractNum inputNum = inputDocument.getNumbering().getAbstractNum(numId);
 
         final XWPFAbstractNum outputNum = new XWPFAbstractNum((CTAbstractNum) inputNum.getCTAbstractNum().copy());
-        final BigInteger newID = BigInteger.valueOf(ouptutDocument.getNumbering().getAbstractNums().size());
+        final BigInteger newID = BigInteger.valueOf(outputDocument.getNumbering().getAbstractNums().size());
         outputNum.getAbstractNum().setAbstractNumId(newID);
-        BigInteger outputNumID = ouptutDocument.getNumbering().addAbstractNum(outputNum);
-        ouptutDocument.getNumbering().addNum(outputNumID);
+        BigInteger outputNumID = outputDocument.getNumbering().addAbstractNum(outputNum);
+        outputDocument.getNumbering().addNum(outputNumID);
         return outputNumID;
     }
 
