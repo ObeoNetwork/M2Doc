@@ -1,0 +1,14 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a query :
+  [query: .MyTemplate('')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
+
+template public MyTemplate (any : java.lang.String)
+  [query: .fromHTMLBodyString('<ol> \n\t<li>Coffee</li> \n\t<li>Tea</li>\n\t<li>Milk</li>\n</ol>')]
