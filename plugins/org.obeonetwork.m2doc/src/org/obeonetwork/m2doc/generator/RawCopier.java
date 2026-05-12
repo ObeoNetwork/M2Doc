@@ -39,6 +39,7 @@ import org.apache.poi.xwpf.usermodel.XWPFAbstractNum;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFootnote;
 import org.apache.poi.xwpf.usermodel.XWPFHeaderFooter;
+import org.apache.poi.xwpf.usermodel.XWPFNumbering;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFSDT;
@@ -369,8 +370,12 @@ public class RawCopier {
         final XWPFDocument inputDocument = inputBody.getXWPFDocument();
         final XWPFDocument outputDocument = outputBody.getXWPFDocument();
 
-        final BigInteger numId = inputDocument.getNumbering().getAbstractNumID(inputNumID);
-        if (numId == null) {
+        final XWPFNumbering inputNumbering = inputDocument.getNumbering();
+        BigInteger numId = null;
+        if (inputNumbering != null) {
+            numId = inputDocument.getNumbering().getAbstractNumID(inputNumID);
+        }
+        if (inputNumbering == null || numId == null) {
             // If it's not found in the template, check in the generated document (implicit numbering from template constructs)
             return outputDocument.getNumbering().getAbstractNumID(inputNumID);
         }

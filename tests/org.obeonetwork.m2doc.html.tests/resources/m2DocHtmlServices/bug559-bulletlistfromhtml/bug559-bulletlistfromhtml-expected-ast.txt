@@ -1,0 +1,11 @@
+
+=== HEADER ===
+
+=== BODY ===
+
+  A simple demonstration of a query :
+  [query: .fromHTMLBodyString('<ol> \n\t<li>Coffee</li> \n\t<li>Tea</li>\n\t<li>Milk</li>\n</ol>')]
+  End of demonstration.
+=== FOOTER ===
+
+=== TEMPLATES ===
