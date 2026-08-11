@@ -37,6 +37,10 @@ First you need to download [Capella](https://mbse-capella.org/). It can be downl
 
 Once your download is finished, extract the downloaded archive and run the eclipe executable in the eclipse sub folder. You are now ready for the last step of the installation. You will need to [add a new update site](https://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-127.htm):
 
+## Installation for Capella 7.1.x
+
+* `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/7.1.0_M2Doc4.0.2/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/7.1.0_M2Doc4.0.2/full/org.obeonetwork.capella.update.full.zip) (M2Doc 4.0.2)
+
 ## Installation for Capella 7.0.x
 
 * `https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/7.0.1_M2Doc4.0.2/full` [zip](https://s3-eu-west-1.amazonaws.com/obeo-networkaggregation-releases/capella-extensions/7.0.1_M2Doc4.0.2/full/org.obeonetwork.capella.update.full.zip) (M2Doc 4.0.2)
