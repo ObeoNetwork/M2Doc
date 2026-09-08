@@ -480,6 +480,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             newParagraph = paragraph;
         }
 
+        bookmarkManager.copyNativeBookmarksBefore(srcRun, newParagraph);
+
         if (srcRun instanceof XWPFHyperlinkRun) {
             // Hyperlinks meta information is saved in the paragraph and not in the run. So we have to update the paragrapah with a copy of
             // the hyperlink to insert.
@@ -496,6 +498,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             newRun = newParagraph.createRun();
             newRun.getCTR().set(srcRun.getCTR());
         }
+
+        bookmarkManager.copyNativeBookmarksAfter(srcRun, newParagraph);
 
         return newRun;
     }
@@ -519,7 +523,11 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             newParagraph = paragraph;
         }
 
-        return insertString(newParagraph, srcRun, replacement);
+        bookmarkManager.copyNativeBookmarksBefore(srcRun, newParagraph);
+        final XWPFRun res = insertString(newParagraph, srcRun, replacement);
+        bookmarkManager.copyNativeBookmarksAfter(srcRun, newParagraph);
+
+        return res;
     }
 
     /**
@@ -607,6 +615,11 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         ctp.getRList().clear();
         ctp.getFldSimpleList().clear();
         ctp.getHyperlinkList().clear();
+        // Bookmark start/end elements are paragraph-level siblings of runs.
+        // Keeping them while rebuilding the runs places both boundaries before
+        // the generated text and turns the bookmark into an empty range.
+        ctp.getBookmarkStartList().clear();
+        ctp.getBookmarkEndList().clear();
         res.getCTP().set(ctp);
         int runNb = res.getRuns().size();
         for (int i = 0; i < runNb; i++) {
@@ -615,6 +628,10 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         currentTemplateParagraph = srcParagraph;
         currentGeneratedParagraph = res;
         forceNewParagraph = false;
+
+        // Empty paragraphs have no run on which the normal before/after
+        // bookmark reconstruction can be triggered.
+        bookmarkManager.copyNativeBookmarksFromEmptyParagraph(srcParagraph, res);
 
         return res;
     }
@@ -2431,14 +2448,24 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             currentGeneratedRow = new XWPFTableRow(currentGeneratedTable.getCTTbl().addNewTr(), currentGeneratedTable);
             final CTRow ctRow = (CTRow) row.getTableRow().getCtRow().copy();
             ctRow.getTcList().clear();
+            ctRow.getBookmarkStartList().clear();
+            ctRow.getBookmarkEndList().clear();
             while (!currentGeneratedRow.getTableCells().isEmpty()) {
                 currentGeneratedRow.removeCell(0);
             }
 
             currentGeneratedRow.getCtRow().set(ctRow);
-            // iterate on cells.
+            bookmarkManager.copyNativeBookmarksBeforeRow(row.getTableRow().getCtRow(),
+                    currentGeneratedRow.getCtRow());
+            // Iterate on cells and preserve row-level markup at its exact
+            // position between the corresponding w:tc elements.
+            int cellIndex = 0;
             for (Cell cell : row.getCells()) {
                 doSwitch(cell);
+                bookmarkManager.copyNativeBookmarksSpanningRow(row.getTableRow(), currentGeneratedRow);
+                bookmarkManager.copyNativeBookmarksAfterCell(row.getTableRow().getCtRow(),
+                        currentGeneratedRow.getCtRow(), cellIndex);
+                cellIndex++;
             }
         } finally {
             currentGeneratedRow = savedRow;
