@@ -27,6 +27,7 @@ import java.util.Stack;
 import java.util.concurrent.CancellationException;
 
 import org.apache.poi.ooxml.POIXMLDocumentPart.RelationPart;
+import org.apache.poi.ooxml.POIXMLProperties.CustomProperties;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.BreakType;
@@ -113,6 +114,8 @@ import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 import org.obeonetwork.m2doc.util.FieldUtils;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.obeonetwork.m2doc.util.SequenceField;
+import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperties;
+import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
 import org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTAbstractNum;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
@@ -369,7 +372,37 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             worked(monitor, unitOfWork);
         }
 
+        removeM2DocCustomProperties(document);
+
         return currentGeneratedParagraph;
+    }
+
+    /**
+     * Removes M2Doc-internal custom document properties from the generated
+     * document while preserving all user-defined and third-party properties.
+     * <p>
+     * M2Doc stores template metadata such as {@code m:M2DocVersion} and
+     * {@code m:uri:...} in {@code docProps/custom.xml}. These properties are
+     * useful while processing the template, but they must not leak into the
+     * generated deliverable.
+     * </p>
+     *
+     * @param document
+     *            the generated {@link XWPFDocument}
+     */
+    private void removeM2DocCustomProperties(XWPFDocument document) {
+        final CustomProperties customProperties = document.getProperties().getCustomProperties();
+        final CTProperties properties = customProperties.getUnderlyingProperties();
+
+        // Iterate backwards because XMLBeans exposes the properties as an
+        // indexed live array. Removing an item shifts every following item.
+        for (int i = properties.sizeOfPropertyArray() - 1; i >= 0; i--) {
+            final CTProperty property = properties.getPropertyArray(i);
+            final String name = property.getName();
+            if (name != null && name.startsWith("m:")) {
+                properties.removeProperty(i);
+            }
+        }
     }
 
     /**
