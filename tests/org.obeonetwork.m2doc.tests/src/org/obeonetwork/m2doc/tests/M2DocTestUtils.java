@@ -255,6 +255,10 @@ public final class M2DocTestUtils {
                 "...STACK..."); // strip stack traces
         res = res.replaceAll("127.0.0.100:12.345", "127.0.0.100:12 345"); // localized port...
         res = res.replaceAll("127.0.0.100:12,345", "127.0.0.100:12 345"); // localized port...
+        res = res.replaceAll("Could not activate TCPClientConnector\\[127.0.0.100:12 345\\]", "No CDO Server");
+        res = res.replaceAll(
+                "org.eclipse.net4j.util.concurrent.TimeoutRuntimeException: Channel registration timeout after [0-9]+ milliseconds",
+                "No CDO Server");
 
         return res;
     }
