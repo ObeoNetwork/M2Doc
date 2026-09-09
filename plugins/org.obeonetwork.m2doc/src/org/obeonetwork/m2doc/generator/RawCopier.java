@@ -985,24 +985,30 @@ public class RawCopier {
             final XWPFTable inputTable) {
         final List<XWPFTableRow> inputRows = inputTable.getRows();
         final List<XWPFTableRow> outputRows = outputTable.getRows();
-        if (inputRows.size() == outputRows.size()) {
-            for (int rowIndex = 0; rowIndex < inputRows.size(); rowIndex++) {
-                final XWPFTableRow inputRow = inputRows.get(rowIndex);
-                final XWPFTableRow outputRow = outputRows.get(rowIndex);
-                final List<XWPFTableCell> inputCells = inputRow.getTableCells();
-                final List<XWPFTableCell> outputCells = outputRow.getTableCells();
-                for (int cellIndex = 0; cellIndex < inputCells.size(); cellIndex++) {
-                    final XWPFTableCell inputCell = inputCells.get(cellIndex);
-                    final XWPFTableCell outputCell = outputCells.get(cellIndex);
-                    final List<IBodyElement> inputBodyElements = inputCell.getBodyElements();
-                    final List<IBodyElement> outputBodyElements = outputCell.getBodyElements();
-                    for (int bodyElementIndex = 0; bodyElementIndex < inputBodyElements.size(); bodyElementIndex++) {
-                        final IBodyElement inputBodyElement = inputBodyElements.get(bodyElementIndex);
-                        if (inputBodyElement instanceof XWPFParagraph) {
-                            final IBodyElement outputBodyElement = outputBodyElements.get(bodyElementIndex);
-                            updateBookmarks(bookmarkManager, ((XWPFParagraph) outputBodyElement).getCTP(),
-                                    ((XWPFParagraph) inputBodyElement).getCTP(), outputTable.getBody());
-                        }
+        final int rowCount = Math.min(inputRows.size(), outputRows.size());
+        for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+            final XWPFTableRow inputRow = inputRows.get(rowIndex);
+            final XWPFTableRow outputRow = outputRows.get(rowIndex);
+            final List<XWPFTableCell> inputCells = inputRow.getTableCells();
+            final List<XWPFTableCell> outputCells = outputRow.getTableCells();
+            final int cellCount = Math.min(inputCells.size(), outputCells.size());
+            for (int cellIndex = 0; cellIndex < cellCount; cellIndex++) {
+                final XWPFTableCell inputCell = inputCells.get(cellIndex);
+                final XWPFTableCell outputCell = outputCells.get(cellIndex);
+                final List<IBodyElement> inputBodyElements = inputCell.getBodyElements();
+                final List<IBodyElement> outputBodyElements = outputCell.getBodyElements();
+                final int bodyElementCount = Math.min(inputBodyElements.size(), outputBodyElements.size());
+                for (int bodyElementIndex = 0; bodyElementIndex < bodyElementCount; bodyElementIndex++) {
+                    final IBodyElement inputBodyElement = inputBodyElements.get(bodyElementIndex);
+                    final IBodyElement outputBodyElement = outputBodyElements.get(bodyElementIndex);
+                    if (inputBodyElement instanceof XWPFParagraph
+                            && outputBodyElement instanceof XWPFParagraph) {
+                        updateBookmarks(bookmarkManager, ((XWPFParagraph) outputBodyElement).getCTP(),
+                                ((XWPFParagraph) inputBodyElement).getCTP(), outputCell);
+                    } else if (inputBodyElement instanceof XWPFTable
+                            && outputBodyElement instanceof XWPFTable) {
+                        updateBookmarks(bookmarkManager, (XWPFTable) outputBodyElement,
+                                (XWPFTable) inputBodyElement);
                     }
                 }
             }
@@ -1025,18 +1031,21 @@ public class RawCopier {
             IBody outputBody) {
         final List<CTBookmark> oldBookmarks = inputParagraph.getBookmarkStartList();
         final List<CTBookmark> newBookmarks = outputParagraph.getBookmarkStartList();
-        for (int bookmarkIndex = 0; bookmarkIndex < oldBookmarks.size(); bookmarkIndex++) {
+        final int bookmarkCount = Math.min(oldBookmarks.size(), newBookmarks.size());
+        for (int bookmarkIndex = 0; bookmarkIndex < bookmarkCount; bookmarkIndex++) {
             bookmarkManager.updateXmlObject(newBookmarks.get(bookmarkIndex), oldBookmarks.get(bookmarkIndex),
                     outputBody);
         }
-        List<CTR> inputRuns = inputParagraph.getRList();
+        final List<CTR> inputRuns = inputParagraph.getRList();
         final List<CTR> outputRuns = outputParagraph.getRList();
-        for (int runIndex = 0; runIndex < inputRuns.size(); runIndex++) {
+        final int runCount = Math.min(inputRuns.size(), outputRuns.size());
+        for (int runIndex = 0; runIndex < runCount; runIndex++) {
             final CTR inputRun = inputRuns.get(runIndex);
             final CTR outputRun = outputRuns.get(runIndex);
             final List<CTText> inputTexts = inputRun.getInstrTextList();
             final List<CTText> outputTexts = outputRun.getInstrTextList();
-            for (int textIndex = 0; textIndex < inputTexts.size(); textIndex++) {
+            final int textCount = Math.min(inputTexts.size(), outputTexts.size());
+            for (int textIndex = 0; textIndex < textCount; textIndex++) {
                 bookmarkManager.updateXmlObject(outputTexts.get(textIndex), inputTexts.get(textIndex), outputBody);
             }
         }
