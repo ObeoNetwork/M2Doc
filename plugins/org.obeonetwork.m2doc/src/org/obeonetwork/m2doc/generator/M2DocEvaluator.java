@@ -27,6 +27,7 @@ import java.util.Stack;
 import java.util.concurrent.CancellationException;
 
 import org.apache.poi.ooxml.POIXMLDocumentPart.RelationPart;
+import org.apache.poi.ooxml.POIXMLProperties.CustomProperties;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.BreakType;
@@ -113,6 +114,8 @@ import org.obeonetwork.m2doc.template.util.TemplateSwitch;
 import org.obeonetwork.m2doc.util.FieldUtils;
 import org.obeonetwork.m2doc.util.M2DocUtils;
 import org.obeonetwork.m2doc.util.SequenceField;
+import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperties;
+import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
 import org.openxmlformats.schemas.officeDocument.x2006.sharedTypes.STOnOff;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTAbstractNum;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
@@ -369,7 +372,36 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             worked(monitor, unitOfWork);
         }
 
+        removeM2DocCustomProperties(document);
+
         return currentGeneratedParagraph;
+    }
+
+    /**
+     * Removes M2Doc-internal custom document properties from the generated
+     * document while preserving all user-defined and third-party properties.
+     *
+     * <p>M2Doc stores template metadata such as {@code m:M2DocVersion} and
+     * {@code m:uri:...} in {@code docProps/custom.xml}. These properties are
+     * useful while processing the template, but they must not leak into the
+     * generated deliverable.</p>
+     *
+     * @param document
+     *            the generated document
+     */
+    private void removeM2DocCustomProperties(XWPFDocument document) {
+        final CustomProperties customProperties = document.getProperties().getCustomProperties();
+        final CTProperties properties = customProperties.getUnderlyingProperties();
+
+        // Iterate backwards because XMLBeans exposes the properties as an
+        // indexed live array. Removing an item shifts every following item.
+        for (int i = properties.sizeOfPropertyArray() - 1; i >= 0; i--) {
+            final CTProperty property = properties.getPropertyArray(i);
+            final String name = property.getName();
+            if (name != null && name.startsWith("m:")) {
+                properties.removeProperty(i);
+            }
+        }
     }
 
     /**
@@ -480,6 +512,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             newParagraph = paragraph;
         }
 
+        bookmarkManager.copyNativeBookmarksBefore(srcRun, newParagraph);
+
         if (srcRun instanceof XWPFHyperlinkRun) {
             // Hyperlinks meta information is saved in the paragraph and not in the run. So we have to update the paragrapah with a copy of
             // the hyperlink to insert.
@@ -496,6 +530,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             newRun = newParagraph.createRun();
             newRun.getCTR().set(srcRun.getCTR());
         }
+
+        bookmarkManager.copyNativeBookmarksAfter(srcRun, newParagraph);
 
         return newRun;
     }
@@ -519,7 +555,11 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             newParagraph = paragraph;
         }
 
-        return insertString(newParagraph, srcRun, replacement);
+        bookmarkManager.copyNativeBookmarksBefore(srcRun, newParagraph);
+        final XWPFRun res = insertString(newParagraph, srcRun, replacement);
+        bookmarkManager.copyNativeBookmarksAfter(srcRun, newParagraph);
+
+        return res;
     }
 
     /**
@@ -607,6 +647,11 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         ctp.getRList().clear();
         ctp.getFldSimpleList().clear();
         ctp.getHyperlinkList().clear();
+        // Bookmark start/end elements are paragraph-level siblings of runs.
+        // Keeping them while rebuilding the runs places both boundaries before
+        // the generated text and turns the bookmark into an empty range.
+        ctp.getBookmarkStartList().clear();
+        ctp.getBookmarkEndList().clear();
         res.getCTP().set(ctp);
         int runNb = res.getRuns().size();
         for (int i = 0; i < runNb; i++) {
@@ -615,6 +660,10 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
         currentTemplateParagraph = srcParagraph;
         currentGeneratedParagraph = res;
         forceNewParagraph = false;
+
+        // Empty paragraphs have no run on which the normal before/after
+        // bookmark reconstruction can be triggered.
+        bookmarkManager.copyNativeBookmarksFromEmptyParagraph(srcParagraph, res);
 
         return res;
     }
@@ -1069,7 +1118,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             final CTSectPr section = paragraph.getCTP().getPPr().getSectPr();
             res = getAbsoluteWidthFromSection(image, section);
         } else {
-            // no section attached to the paragraph try the containing body
+            // no section attached to the paragraph try the containing boby
             final IBody body = paragraph.getBody();
             if (body instanceof XWPFDocument) {
                 final CTSectPr section = ((XWPFDocument) body).getDocument().getBody().getSectPr();
@@ -1079,20 +1128,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                         .getSectPr();
                 res = getAbsoluteWidthFromSection(image, section);
             } else if (body instanceof XWPFTableCell) {
-                final XWPFTableCell cell = (XWPFTableCell) body;
-                final int cellWidth;
-                // avoid an NPE from POI
-                if (cell.getCTTc() != null && cell.getCTTc().getTcPr() != null
-                    && cell.getCTTc().getTcPr().getTcW() != null && cell.getCTTc().getTcPr().getTcW().getW() != null) {
-                    cellWidth = cell.getWidth();
-                } else {
-                    cellWidth = 0;
-                }
-                if (cellWidth > 0) {
-                    res = (int) (cellWidth * image.getRelativeWidth() / 100.0d / UNIT_CONVERSION);
-                } else {
-                    res = image.getWidth();
-                }
+                final int cellWidth = ((XWPFTableCell) body).getWidth();
+                res = (int) (cellWidth * image.getRelativeWidth() / 100.0d / UNIT_CONVERSION);
             } else {
                 throw new UnsupportedOperationException("unknown type of IBody : " + body.getClass());
             }
@@ -1146,7 +1183,7 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             final CTSectPr section = paragraph.getCTP().getPPr().getSectPr();
             res = getAbsoluteHeightFromSection(image, section);
         } else {
-            // no section attached to the paragraph try the containing body
+            // no section attached to the paragraph try the containing boby
             final IBody body = paragraph.getBody();
             if (body instanceof XWPFDocument) {
                 final CTSectPr section = ((XWPFDocument) body).getDocument().getBody().getSectPr();
@@ -1156,12 +1193,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
                         .getSectPr();
                 res = getAbsoluteHeightFromSection(image, section);
             } else if (body instanceof XWPFTableCell) {
-                final int rowHeight = ((XWPFTableCell) body).getTableRow().getHeight();
-                if (rowHeight > 0) {
-                    res = (int) (rowHeight * image.getRelativeHeight() / 100.0d / UNIT_CONVERSION);
-                } else {
-                    res = image.getHeight();
-                }
+                // TODO technically the cell height depend on its content
+                res = image.getHeight();
             } else {
                 throw new UnsupportedOperationException("unknown type of IBody : " + body.getClass());
             }
@@ -2447,14 +2480,24 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             currentGeneratedRow = new XWPFTableRow(currentGeneratedTable.getCTTbl().addNewTr(), currentGeneratedTable);
             final CTRow ctRow = (CTRow) row.getTableRow().getCtRow().copy();
             ctRow.getTcList().clear();
+            ctRow.getBookmarkStartList().clear();
+            ctRow.getBookmarkEndList().clear();
             while (!currentGeneratedRow.getTableCells().isEmpty()) {
                 currentGeneratedRow.removeCell(0);
             }
 
             currentGeneratedRow.getCtRow().set(ctRow);
-            // iterate on cells.
+            bookmarkManager.copyNativeBookmarksBeforeRow(row.getTableRow().getCtRow(),
+                    currentGeneratedRow.getCtRow());
+            // Iterate on cells and preserve row-level markup at its exact
+            // position between the corresponding w:tc elements.
+            int cellIndex = 0;
             for (Cell cell : row.getCells()) {
                 doSwitch(cell);
+                bookmarkManager.copyNativeBookmarksSpanningRow(row.getTableRow(), currentGeneratedRow);
+                bookmarkManager.copyNativeBookmarksAfterCell(row.getTableRow().getCtRow(),
+                        currentGeneratedRow.getCtRow(), cellIndex);
+                cellIndex++;
             }
         } finally {
             currentGeneratedRow = savedRow;
