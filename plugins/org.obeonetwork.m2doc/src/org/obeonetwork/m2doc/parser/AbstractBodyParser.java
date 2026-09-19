@@ -38,6 +38,7 @@ import org.obeonetwork.m2doc.template.Template;
 import org.obeonetwork.m2doc.template.TemplatePackage;
 import org.obeonetwork.m2doc.util.AQL56Compatibility;
 import org.obeonetwork.m2doc.util.M2DocUtils;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRow;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtBlock;
 
 import static org.obeonetwork.m2doc.util.M2DocUtils.message;
@@ -270,7 +271,18 @@ public abstract class AbstractBodyParser {
         for (XWPFTableRow tablerow : wtable.getRows()) {
             Row row = (Row) EcoreUtil.create(TemplatePackage.Literals.ROW);
             table.getRows().add(row);
-            row.setTableRow(tablerow);
+
+            /*
+             * Keep a detached snapshot of the complete source row before any
+             * cell is parsed. Parsing a cell uses a TokenIteratorFieldRewriter
+             * that can modify the underlying OOXML. If the live table row is
+             * stored in the AST, paragraph- and row-level bookmark markers can
+             * be lost before generation, in particular Word's _Ref bookmarks
+             * that start inside a cell and end directly under w:tr.
+             */
+            final CTRow sourceRow = (CTRow) tablerow.getCtRow().copy();
+            row.setTableRow(new XWPFTableRow(sourceRow, wtable));
+
             for (XWPFTableCell tableCell : tablerow.getTableCells()) {
                 Cell cell = (Cell) EcoreUtil.create(TemplatePackage.Literals.CELL);
                 row.getCells().add(cell);
