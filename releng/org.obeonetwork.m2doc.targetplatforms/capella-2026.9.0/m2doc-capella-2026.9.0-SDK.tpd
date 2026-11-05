@@ -1,0 +1,5 @@
+target "M2Doc Capella 2026.9.0 Target Platform SDK"
+
+with source requirements
+
+include "m2doc-capella-2026.9.0.tpd"

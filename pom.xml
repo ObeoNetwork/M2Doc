@@ -97,8 +97,9 @@
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-6.0.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/sirius-5.1.1</module-->
     <!-- Capella -->
-    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-7.0.1</module>
-    <!--module>releng/org.obeonetwork.m2doc.targetplatforms/capella-7.0.0</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-2026.9.0</module>
+    <!--module>releng/org.obeonetwork.m2doc.targetplatforms/capella-7.0.1</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-7.0.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-6.1.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-6.0.0</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/capella-5.2.0</module>
@@ -1750,6 +1751,36 @@
     </profile>
 
     <!-- Capella -->
+    <profile>
+      <id>platform-capella-2026.9.0</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>capella-2026.9.0</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>https://download.eclipse.org/sirius/updates/milestones/7.5.1rc2/2025-09/</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-capella-2026.9.0</artifactId>
+                  <version>5.0.0</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>platform-capella-7.0.1</id>
       <activation>
