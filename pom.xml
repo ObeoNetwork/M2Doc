@@ -54,7 +54,8 @@
   <modules>
     <!-- Eclipse -->
     <module>releng/org.obeonetwork.m2doc.targetplatforms/2025-12</module>
-    <!--module>releng/org.obeonetwork.m2doc.targetplatforms/2025-06</module>
+    <!--module>releng/org.obeonetwork.m2doc.targetplatforms/2025-09</module>
+    <module>releng/org.obeonetwork.m2doc.targetplatforms/2025-06</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/2024-12</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/2024-03</module>
     <module>releng/org.obeonetwork.m2doc.targetplatforms/2022-12</module>
@@ -507,6 +508,36 @@
                 <artifact>
                   <groupId>org.obeonetwork.m2doc</groupId>
                   <artifactId>m2doc-2025-12</artifactId>
+                  <version>5.0.0</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>platform-2025-09</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>2025-09</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-rcptt-inject-site>http://download.eclipse.org/releases/2025-09</eclipse-rcptt-inject-site>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.obeonetwork.m2doc</groupId>
+                  <artifactId>m2doc-2025-09</artifactId>
                   <version>5.0.0</version>
                 </artifact>
               </target>
