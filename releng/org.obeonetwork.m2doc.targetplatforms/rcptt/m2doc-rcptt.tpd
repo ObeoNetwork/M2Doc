@@ -1,5 +1,6 @@
 target "M2Doc RCPTT Target Platform"
 
+environment JavaSE-21
 with requirements
 
 include "../capella-2026.9.0/m2doc-capella-2026.9.0.tpd"
