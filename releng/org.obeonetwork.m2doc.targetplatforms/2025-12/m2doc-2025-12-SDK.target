@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="M2Doc 2025-12 Target Platform SDK" sequenceNumber="1770649610">
+<target name="M2Doc 2025-12 Target Platform SDK" sequenceNumber="1793976375">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -111,10 +111,6 @@
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.xtext.sdk.feature.group" version="2.30.0.v20230227-1344"/>
       <repository id="XText" location="https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.30.0/"/>
-    </location>
-    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.rcptt.platform.feature.group" version="0.0.0"/>
-      <repository location="https://download.eclipse.org/rcptt/release/2.5.4/repository"/>
     </location>
   </locations>
 </target>

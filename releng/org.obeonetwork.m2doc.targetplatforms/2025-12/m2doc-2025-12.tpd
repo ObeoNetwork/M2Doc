@@ -121,7 +121,3 @@ location XText "https://download.eclipse.org/modeling/tmf/xtext/updates/releases
 	// for testing purpose only
 	org.eclipse.xtext.sdk.feature.group [2.30.0,2.31.0)
 }
-
-location "https://download.eclipse.org/rcptt/release/2.5.4/repository" {
-	org.eclipse.rcptt.platform.feature.group lazy
-}

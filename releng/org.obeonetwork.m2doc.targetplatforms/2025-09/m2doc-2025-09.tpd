@@ -35,15 +35,15 @@ location Eclipse "https://download.eclipse.org/releases/2025-09" {
 	org.apache.xerces lazy
 
 	// wikitext
-	org.eclipse.mylyn.wikitext [4.2.0,5.0.0)
-	org.eclipse.mylyn.wikitext.asciidoc [4.2.0,5.0.0)
-	org.eclipse.mylyn.wikitext.confluence [4.2.0,5.0.0)
-	org.eclipse.mylyn.wikitext.html [4.2.0,5.0.0)
-	org.eclipse.mylyn.wikitext.markdown [4.2.0,5.0.0)
-	org.eclipse.mylyn.wikitext.mediawiki [4.2.0,5.0.0)
-	org.eclipse.mylyn.wikitext.textile [4.2.0,5.0.0)
-	org.eclipse.mylyn.wikitext.tracwiki [4.2.0,5.0.0)
-	org.eclipse.mylyn.wikitext.twiki [4.2.0,5.0.0)
+	org.eclipse.mylyn.wikitext lazy
+	org.eclipse.mylyn.wikitext.asciidoc lazy
+	org.eclipse.mylyn.wikitext.confluence lazy
+	org.eclipse.mylyn.wikitext.html lazy
+	org.eclipse.mylyn.wikitext.markdown lazy
+	org.eclipse.mylyn.wikitext.mediawiki lazy
+	org.eclipse.mylyn.wikitext.textile lazy
+	org.eclipse.mylyn.wikitext.tracwiki lazy
+	org.eclipse.mylyn.wikitext.twiki lazy
 }
 
 location Eclipse2023-03 "https://download.eclipse.org/releases/2023-03" {
@@ -120,8 +120,4 @@ location CDO "https://download.eclipse.org/modeling/emf/cdo/drops/R20230307-0126
 location XText "https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.30.0/" {
 	// for testing purpose only
 	org.eclipse.xtext.sdk.feature.group [2.30.0,2.31.0)
-}
-
-location "https://download.eclipse.org/rcptt/release/2.5.4/repository" {
-	org.eclipse.rcptt.platform.feature.group lazy
 }
