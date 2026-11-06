@@ -148,9 +148,9 @@ location Acceleo_4.2.3_AQL_8.1.3 "https://download.eclipse.org/acceleo/updates/r
 	org.eclipse.acceleo.query.source.feature.group lazy
 	org.eclipse.acceleo.query.feature.group lazy
 	org.eclipse.acceleo.query.ide.ui lazy
-	org.eclipse.acceleo.query.sirius lazy
-	org.eclipse.acceleo.query.cdo lazy
+	org.eclipse.acceleo.query.cdo.feature.group lazy
 	org.eclipse.acceleo.query.jdt.feature.group lazy
+	org.eclipse.acceleo.query.sirius.feature.group lazy
 }
 
 location kitalpha-runtime-core-master "https://download.eclipse.org/kitalpha/updates/nightly/runtime/master/" {
