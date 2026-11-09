@@ -7,4 +7,4 @@ Bundle-Version: 1.0.0
 Export-Package: test
 Require-Bundle: org.obeonetwork.m2doc.rcptt.a,
  org.obeonetwork.m2doc.ide.tests
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-21

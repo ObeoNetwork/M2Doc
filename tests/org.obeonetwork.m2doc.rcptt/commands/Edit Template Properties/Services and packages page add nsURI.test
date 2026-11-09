@@ -6,7 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _57frkH6UEei72vRv1zbFOA
-Save-Time: 12/15/20 9:40 AM
+Runtime-Version: 2.8.0.202601191508
+Save-Time: 11/6/26, 1:59 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -21,10 +22,10 @@ with [get-window "Template properties" | get-table] {
 with [get-window "Template properties"] {
     get-tab-folder | get-tab-item "nsURI (expert)" | click
     get-button Add | click
-    with [get-window "Package Selection"] {
-        get-table | select "http:\\/\\/www.xtext.org\\/example\\/mydsl\\/MyDsl"
-        get-button OK | click
-    }
+}
+with [get-window "Template properties" | get-window "Package Selection"] {
+    get-editbox -after [get-label "Select a registered package URI:"] | set-text MyDsl
+    get-button OK | click
 }
 get-window "Template properties" | get-table | get-item -path "http:\\/\\/www.xtext.org\\/example\\/mydsl\\/MyDsl" 
     | get-property caption | equals "http://www.xtext.org/example/mydsl/MyDsl" | verify-true
@@ -33,6 +34,7 @@ with [get-window "Template properties"] {
     get-table | select linkName
     get-button Edit | click
 }
+
 get-window "Template properties" | get-window "Select a variable type for linkName" | get-tree | get-item 
     -path "myDsl::Greeting" | get-property caption | equals "myDsl::Greeting" | verify-true
 with [get-window "Template properties"] {
