@@ -1,10 +1,9 @@
 target "M2Doc RCPTT Target Platform"
 
-environment JavaSE-21
+environment JavaSE-25
 with requirements
 
-include "../capella-2026.9.0/m2doc-capella-2026.9.0.tpd"
-
+include "../2026-12/m2doc-2026-12.tpd"
 
 location "https://download.eclipse.org/rcptt/release/2.8.2/repository" {
 	org.eclipse.rcptt.platform.feature.group lazy

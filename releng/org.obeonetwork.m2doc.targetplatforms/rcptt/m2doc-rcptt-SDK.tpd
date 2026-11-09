@@ -1,5 +1,6 @@
 target "M2Doc RCPTT Target Platform SDK"
 
+environment JavaSE-25
 with source requirements
 
 include "m2doc-rcptt.tpd"

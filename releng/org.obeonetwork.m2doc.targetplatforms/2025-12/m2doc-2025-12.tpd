@@ -1,5 +1,6 @@
 target "M2Doc 2025-12 Target Platform"
 
+environment JavaSE-21
 with requirements
 
 location Eclipse-Shared-License "https://download.eclipse.org/cbi/updates/license" {
@@ -14,6 +15,7 @@ location Eclipse "https://download.eclipse.org/releases/2025-12" {
 	org.eclipse.ui lazy
 	org.eclipse.ui.views.log lazy
 	org.eclipse.epp.mpc.feature.group lazy
+	com.ibm.icu lazy
 
 	org.eclipse.emf.sdk.feature.group lazy
 	org.junit [4.0.0,5.0.0)

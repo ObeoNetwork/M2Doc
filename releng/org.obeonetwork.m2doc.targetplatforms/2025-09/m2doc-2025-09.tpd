@@ -1,5 +1,6 @@
 target "M2Doc 2025-09 Target Platform"
 
+environment JavaSE-21
 with requirements
 
 location Eclipse-Shared-License "https://download.eclipse.org/cbi/updates/license" {

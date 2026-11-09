@@ -1,5 +1,6 @@
 target "M2Doc 2025-12 Target Platform SDK"
 
+environment JavaSE-21
 with source requirements
 
 include "m2doc-2025-12.tpd"
