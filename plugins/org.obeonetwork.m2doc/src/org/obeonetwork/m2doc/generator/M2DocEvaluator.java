@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016, 2025 Obeo. 
+ *  Copyright (c) 2016, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -1037,8 +1037,8 @@ public class M2DocEvaluator extends TemplateSwitch<XWPFParagraph> {
             final int heigth = Units.toEMU(asoluteImage.getHeight());
             final int width = Units.toEMU(asoluteImage.getWidth());
             try (InputStream imageStream = asoluteImage.getInputStream()) {
-                run.addPicture(imageStream, asoluteImage.getType().getPoiType(), asoluteImage.getURI().toString(),
-                        width, heigth);
+                run.addPicture(imageStream, asoluteImage.getType().getPoiPictureType(),
+                        asoluteImage.getURI().toString(), width, heigth);
             }
         } catch (InvalidFormatException e) {
             insertMessage(paragraph, ValidationMessageLevel.ERROR,

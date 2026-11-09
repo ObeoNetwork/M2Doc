@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2017, 2023 Obeo. 
+ *  Copyright (c) 2017, 2026 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v2.0
  *  which accompanies this distribution, and is available at
@@ -22,43 +22,43 @@ import org.eclipse.emf.common.util.URI;
 public enum PictureType {
 
     /*** Bitmap format. */
-    BMP(Document.PICTURE_TYPE_BMP),
+    BMP(org.apache.poi.common.usermodel.PictureType.BMP),
 
     /*** DIB format. */
-    DIB(Document.PICTURE_TYPE_DIB),
+    DIB(org.apache.poi.common.usermodel.PictureType.DIB),
 
     /*** EMF format. */
-    EMF(Document.PICTURE_TYPE_EMF),
+    EMF(org.apache.poi.common.usermodel.PictureType.EMF),
 
     /*** EPS format. */
-    EPS(Document.PICTURE_TYPE_EPS),
+    EPS(org.apache.poi.common.usermodel.PictureType.EPS),
 
     /*** GIF format. */
-    GIF(Document.PICTURE_TYPE_GIF),
+    GIF(org.apache.poi.common.usermodel.PictureType.GIF),
 
     /*** JPEG format. */
-    JPG(Document.PICTURE_TYPE_JPEG),
+    JPG(org.apache.poi.common.usermodel.PictureType.JPEG),
 
     /*** JPG format. */
-    JPEG(Document.PICTURE_TYPE_JPEG),
+    JPEG(org.apache.poi.common.usermodel.PictureType.JPEG),
 
     /*** PICT format. */
-    PICT(Document.PICTURE_TYPE_PICT),
+    PICT(org.apache.poi.common.usermodel.PictureType.PICT),
 
     /*** PNG format. */
-    PNG(Document.PICTURE_TYPE_PNG),
+    PNG(org.apache.poi.common.usermodel.PictureType.PNG),
 
     /*** PNG format. */
-    SVG(Document.PICTURE_TYPE_PNG),
+    SVG(org.apache.poi.common.usermodel.PictureType.PNG),
 
     /*** TIFF format. */
-    TIFF(Document.PICTURE_TYPE_TIFF),
+    TIFF(org.apache.poi.common.usermodel.PictureType.TIFF),
 
     /*** WMF format. */
-    WMF(Document.PICTURE_TYPE_WMF),
+    WMF(org.apache.poi.common.usermodel.PictureType.WMF),
 
     /*** WPG format. */
-    WPG(Document.PICTURE_TYPE_WPG);
+    WPG(org.apache.poi.common.usermodel.PictureType.WPG);
 
     /**
      * Data scheme.
@@ -78,15 +78,15 @@ public enum PictureType {
     /**
      * The picture type according to POI.
      */
-    private int poiType;
+    private org.apache.poi.common.usermodel.PictureType poiType;
 
     /**
      * Default constructor.
      * 
      * @param poiType
-     *            the POI type.
+     *            the POI {@link org.apache.poi.common.usermodel.PictureType}
      */
-    PictureType(int poiType) {
+    PictureType(org.apache.poi.common.usermodel.PictureType poiType) {
         this.poiType = poiType;
     }
 
@@ -97,6 +97,15 @@ public enum PictureType {
      * @see Document
      */
     public int getPoiType() {
+        return poiType.ooxmlId;
+    }
+
+    /**
+     * Return the {@link org.apache.poi.common.usermodel.PictureType}.
+     * 
+     * @return the {@link org.apache.poi.common.usermodel.PictureType}
+     */
+    public org.apache.poi.common.usermodel.PictureType getPoiPictureType() {
         return poiType;
     }
 
