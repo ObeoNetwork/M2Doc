@@ -660,8 +660,8 @@ public class HtmlSerializer {
         }
 
         String spawnStyle = "";
-        if (run.getFontSize() != -1) {
-            spawnStyle += String.format(FONT_SIZE_FORMAT, run.getFontSize());
+        if (run.getFontSizeAsDouble() != null) {
+            spawnStyle += String.format(FONT_SIZE_FORMAT, run.getFontSizeAsDouble().intValue());
         }
         if (run.getCTR().getRPr() != null) {
             // TODO double check this.
