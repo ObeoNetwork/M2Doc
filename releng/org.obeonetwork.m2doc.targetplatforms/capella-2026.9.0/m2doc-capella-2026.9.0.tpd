@@ -3,6 +3,8 @@ target "M2Doc Capella 2026.9.0 Target Platform"
 environment JavaSE-21
 with requirements
 
+//include "https://download.eclipse.org/capella/core/updates/stable/2026.9.0-S20261026/targets/capella.target-definition.targetplatform"
+
 location GMF-Notation-1.13.1 "https://download.eclipse.org/modeling/gmp/gmf-notation/updates/releases/R202211151334" {
 	org.eclipse.gmf.runtime.notation.sdk.feature.group lazy
 }
