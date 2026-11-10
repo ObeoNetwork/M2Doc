@@ -1,6 +1,6 @@
 
 === PROPERTIES ===
-version: 5.0.0
+version: 5.0.1
 metamodels: 
 imports: 
 template-import.withStaticImage.imported
