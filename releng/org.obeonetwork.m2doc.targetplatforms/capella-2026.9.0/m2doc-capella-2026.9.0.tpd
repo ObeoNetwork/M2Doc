@@ -54,7 +54,7 @@ location Eclipse-2025-09 "https://download.eclipse.org/releases/2025-09/" {
 	org.eclipse.equinox.executable.feature.group lazy
 	com.ibm.icu lazy
 	jakarta.inject.jakarta.inject-api lazy
-	org.apache.commons.lang lazy
+	org.apache.commons.lang3 lazy
 	org.eclipse.jgit.source lazy
 	org.eclipse.egit.source.feature.group lazy
 	org.eclipse.xtext.xbase.lib.feature.group lazy

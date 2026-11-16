@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="M2Doc Capella 2026.9.0 Target Platform" sequenceNumber="1794835458">
+<target name="M2Doc Capella 2026.9.0 Target Platform" sequenceNumber="1794837962">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.gmf.runtime.notation.sdk.feature.group" version="0.0.0"/>
@@ -50,7 +50,7 @@
       <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
       <unit id="com.ibm.icu" version="0.0.0"/>
       <unit id="jakarta.inject.jakarta.inject-api" version="0.0.0"/>
-      <unit id="org.apache.commons.lang" version="0.0.0"/>
+      <unit id="org.apache.commons.lang3" version="0.0.0"/>
       <unit id="org.eclipse.jgit.source" version="0.0.0"/>
       <unit id="org.eclipse.egit.source.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.xtext.xbase.lib.feature.group" version="0.0.0"/>
