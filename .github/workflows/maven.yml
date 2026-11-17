@@ -5,6 +5,9 @@ name: Java CI with Maven
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
 
   matrix_prep:
@@ -17,6 +20,8 @@ jobs:
     # Checking out code as the set-matrix step utilizes a file named matrix_includes.json
     - name: Check out code
       uses: actions/checkout@v7.0.1
+      with:
+        persist-credentials: false
     # This step is explained more in a following section
     - id: set-matrix
       run: |
@@ -57,6 +62,8 @@ jobs:
 
     - name: Check out code
       uses: actions/checkout@v7.0.1
+      with:
+        persist-credentials: false
 
     - name: Set up Maven
       uses: stCarolas/setup-maven@v5.1
